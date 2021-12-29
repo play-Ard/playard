@@ -22,6 +22,10 @@ This is a project that we have done to help other peoples who want to make a sim
 
 - Display Library : https://www.arduino.cc/reference/en/libraries/adafruit-ssd1306/
 
+## Helpful Resources
+
+- Oled Display Tutorial : https://randomnerdtutorials.com/guide-for-oled-display-with-arduino/
+
 
 ## Screenshots
 
@@ -33,6 +37,8 @@ This is a project that we have done to help other peoples who want to make a sim
 
 
 ## Usage/Examples
+
+- SPI Display setup
 
 ``` wiring
 // Declaration for SSD1306 display connected using software SPI (default case):
