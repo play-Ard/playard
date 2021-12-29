@@ -34,12 +34,16 @@ This is a project that we have done to help other peoples who want to make a sim
 
 ## Usage/Examples
 
-```javascript
-import Component from 'my-project'
+``` wiring
+// Declaration for SSD1306 display connected using software SPI (default case):
+#define OLED_MOSI   4 //D1
+#define OLED_CLK   3  //D0
+#define OLED_DC    6  
+#define OLED_CS    7
+#define OLED_RESET 5
 
-function App() {
-  return <Component />
-}
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT,
+  OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
 ```
 
 
