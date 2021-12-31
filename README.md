@@ -70,6 +70,26 @@ void setup() {
           }
 ```
 
+- Screening Hello World on I2C display
+``` wiring
+// Declaration for SSD1306 display connected using software I2C (default case):
+#define SCREEN_WIDTH 128	
+#define SCREEN_HEIGHT 64	
+#define OLED_RESET 4		 - if your screen has no reset pin, you have to change that value to -1
+
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+#define SCREEN_ADDRESS 0x3C
+
+void setup() {
+
+  display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS);
+  display.println("Hello World");
+  display.display();
+ 
+          }
+```
+
 
 
  
