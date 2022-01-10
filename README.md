@@ -138,20 +138,13 @@ void setup(){
   spi.begin(SCK, MISO, MOSI, CS);
 
   SD.begin(CS,spi,80000000);
-  String Catgery = []
-  String List[] = ["soru1", "soru2", "soru3", "soru4"]
-
-  abc = randomChoice(List)
 
   writeFile(SD, "/{x}/{abc}", "Türkiyenin en büyük dağı neresidir ?").format(x, abc);
   writeFile(SD, "/soru1cevap.txt", "Ağrı Dağı");
   readFile(SD, "/soru1.txt");
   readFile(SD, "/soru1cevap.txt");
-  
 }
-
 void loop(){
-
 }
 ```
 
