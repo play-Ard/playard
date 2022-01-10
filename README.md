@@ -90,6 +90,71 @@ void setup() {
           }
 ```
 
+- SD Card Write and Read code Example
+``` wiring
+#include "FS.h"
+#include "SD.h"
+#include "SPI.h"
+
+#define SCK  21
+#define MISO  22
+#define MOSI  19
+#define CS  0
+
+void readFile(fs::FS &fs, const char * path){
+  Serial.printf("Reading file: %s\n", path);
+
+  File file = fs.open(path);
+  if(!file){
+    Serial.println("Failed to open file for reading");
+    return;
+  }
+
+  while(file.available()){
+    Serial.write(file.read());
+  }
+  file.close();
+}
+
+void writeFile(fs::FS &fs, const char * path, const char * message){
+  Serial.printf("Writing file: %s\n", path);
+
+  File file = fs.open(path, FILE_WRITE);
+  if(!file){
+    Serial.println("Failed to open file for writing");
+    return;
+  }
+  if(file.print(message)){
+   
+  } else {
+    Serial.println("Write failed");
+  }
+  file.close();
+}
+
+void setup(){
+  Serial.begin(115200);
+  SPIClass spi = SPIClass(VSPI);
+  spi.begin(SCK, MISO, MOSI, CS);
+
+  SD.begin(CS,spi,80000000);
+  String Catgery = []
+  String List[] = ["soru1", "soru2", "soru3", "soru4"]
+
+  abc = randomChoice(List)
+
+  writeFile(SD, "/{x}/{abc}", "Türkiyenin en büyük dağı neresidir ?").format(x, abc);
+  writeFile(SD, "/soru1cevap.txt", "Ağrı Dağı");
+  readFile(SD, "/soru1.txt");
+  readFile(SD, "/soru1cevap.txt");
+  
+}
+
+void loop(){
+
+}
+```
+
 
 
  
