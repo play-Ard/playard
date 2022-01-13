@@ -90,61 +90,119 @@ void setup() {
           }
 ```
 
-- SD Card Write and Read code Example
+- SD Card Write - Read and Random Selection code Example
 ``` wiring
-#include "FS.h"
-#include "SD.h"
-#include "SPI.h"
+#include <SPI.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+// Declaration for SSD1306 display connected using software I2C (default case):
+#define SCREEN_WIDTH 128  
+#define SCREEN_HEIGHT 64  
+#define OLED_RESET -1     //- if your screen has no reset pin, you have to change that value to -1
 
-#define SCK  21
-#define MISO  22
-#define MOSI  19
-#define CS  0
+int xPin = A0; 
+int yPin = A1; 
+int butonPin = 2; 
 
-void readFile(fs::FS &fs, const char * path){
-  Serial.printf("Reading file: %s\n", path);
+int xPozisyon;
+int yPozisyon;
+int butonDurum;
 
-  File file = fs.open(path);
-  if(!file){
-    Serial.println("Failed to open file for reading");
-    return;
-  }
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-  while(file.available()){
-    Serial.write(file.read());
-  }
-  file.close();
-}
+#define SCREEN_ADDRESS 0x3C
+const char *Listem[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
+const char *Listem2[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
+const char *Listem3[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
+const char *Listem4[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
+const char *Listem5[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
+const char *Listem6[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
+const char *Listem7[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
+const char *Listem8[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
+const char *Listem9[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
+const char *Listem10[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
+const char *Listem11[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
+const char *Listem12[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
+const char *Listem13[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
+const char *Listem14[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
+const char *Listem15[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
+const char *Listem16[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
+const char *Listem17[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
+const char *Listem18[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
+const char *Listem19[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
+const char *Listem20[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
+const char *Listem21[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
+const char *Listem22[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
+const char *Listem23[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
+const char *Listem24[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
 
-void writeFile(fs::FS &fs, const char * path, const char * message){
-  Serial.printf("Writing file: %s\n", path);
+long randNumber;
 
-  File file = fs.open(path, FILE_WRITE);
-  if(!file){
-    Serial.println("Failed to open file for writing");
-    return;
-  }
-  if(file.print(message)){
-   
-  } else {
-    Serial.println("Write failed");
-  }
-  file.close();
-}
+void setup() {
+  
+  Serial.begin(9600);
+  pinMode(xPin, INPUT);
+  pinMode(yPin, INPUT);
+  pinMode(butonPin, INPUT_PULLUP);
 
-void setup(){
-  Serial.begin(115200);
-  SPIClass spi = SPIClass(VSPI);
-  spi.begin(SCK, MISO, MOSI, CS);
+  display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS);
+  display.clearDisplay();
+  display.display();
+  display.setTextSize(1);
+  display.setTextColor(WHITE);
+  display.setCursor(0, 10);
+  display.println("Hello World");
+  display.display();
+ 
+          }
+ void loop(){
+  xPozisyon = analogRead(xPin);
+  yPozisyon = analogRead(yPin);
+  butonDurum = digitalRead(butonPin);
+  
+  xPozisyon = map(xPozisyon, 0, 1023, 0, 128);
+  yPozisyon = map(yPozisyon, 0, 1023, 0, 32);
+  Serial.print("X Pozisyonu: ");
+  Serial.print(xPozisyon);
+  Serial.print(" | Y Pozisyonu: ");
+  Serial.print(yPozisyon);
+  Serial.print(" | Buton Durum: ");
+  Serial.println(butonDurum);
+  delay(100);
 
-  SD.begin(CS,spi,80000000);
-
-  writeFile(SD, "/{x}/{abc}", "Türkiyenin en büyük dağı neresidir ?").format(x, abc);
-  writeFile(SD, "/soru1cevap.txt", "Ağrı Dağı");
-  readFile(SD, "/soru1.txt");
-  readFile(SD, "/soru1cevap.txt");
-}
-void loop(){
+  randNumber = random(0, 4);
+  display.println(Listem[randNumber]);
+  display.clearDisplay();
+  delay(10000);
+  display.display();
+  display.println(Listem7[randNumber]);
+  delay(10000);
+   display.clearDisplay();
+  delay(10000);
+  display.display();
+  display.println(Listem2[randNumber]);
+  delay(10000);
+   display.clearDisplay();
+  delay(10000);
+  display.display();
+  display.println(Listem3[randNumber]);
+  delay(10000);
+   display.clearDisplay();
+  delay(10000);
+  display.display();
+  display.println(Listem4[randNumber]);
+  delay(10000);
+   display.clearDisplay();
+  delay(10000);
+  display.display();
+  display.println(Listem5[randNumber]);
+  delay(10000);
+   display.clearDisplay();
+  delay(10000);
+  display.display();
+  display.println(Listem6[randNumber]);
+  delay(10000);
 }
 ```
 
