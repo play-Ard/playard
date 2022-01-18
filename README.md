@@ -29,6 +29,8 @@ This is a project that we have done to help other peoples who want to make a sim
 
 ## Screenshots
 
+![Screenshot](photos/IMG-4930.jpg)
+
 ![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
 
 ![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
