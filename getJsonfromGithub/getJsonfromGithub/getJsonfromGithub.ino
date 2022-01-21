@@ -1,13 +1,28 @@
+#include <SPI.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+// Declaration for SSD1306 display connected using software I2C (default case):
+#define SCREEN_WIDTH 128  
+#define SCREEN_HEIGHT 64  
+#define OLED_RESET -1     //- if your screen has no reset pin, you have to change that value to -1
+
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <WiFiClient.h>
 #include <ArduinoJson.h>
-const char* ssid = "SSID";
-const char* password = "PASSWORD";
+const char* ssid = "RobustCoffeeShop";
+const char* password = "robust9496";
 
 HTTPClient http;
 
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+#define SCREEN_ADDRESS 0x3C
+
 void setup() {
+
+  display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS);
+  display.clearDisplay();
 
   Serial.begin(115200);
 
@@ -36,11 +51,17 @@ void loop() {
         DeserializationError error = deserializeJson(doc, client);
 
         if (!error) {
-          String deneme = doc["questions"][1]["question"]; 
+          String deneme = doc["questions"][0]["question"]; 
          
           Serial.print("------");
           Serial.print(deneme);
           Serial.print("------");
+          display.clearDisplay();
+          display.setTextSize(1);
+          display.setTextColor(WHITE);
+          display.setCursor(0, 10);
+          display.println(deneme);
+          display.display();
 
           
   } else {
