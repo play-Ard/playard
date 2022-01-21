@@ -3,14 +3,10 @@
     {
       "id": 1,
       "question": "falan filan nedir ?"
-    }],[
+    },
     {
-      "id": 1,
+      "id": 2,
       "question": "bisiler bisiler ?"
-    }
-    
-  ],
-  "profile": {
-    "name": "typicode"
-  }
+    }]
+ 
 }
