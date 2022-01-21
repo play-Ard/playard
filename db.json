@@ -1,15 +1,10 @@
 {
-  "questions": [
+  "posts": [
     {
-      "question": "Falan filan nedir",
-      "answer" : "felan"
-    }],
-    
-    [{
-      "question": "Falan filan nedir",
-      "answer" : "felan"
-    }],
-  
+      "id": 1,
+      "title": "hello"
+    }
+  ],
   "profile": {
     "name": "typicode"
   }
