@@ -1,9 +1,14 @@
 {
-  "posts": [
+  "questions": [
     {
       "id": 1,
-      "title": "hello"
+      "question": "falan filan nedir ?"
+    },
+    {
+      "id": 1,
+      "question": "falan filan nedir ?"
     }
+    
   ],
   "profile": {
     "name": "typicode"
