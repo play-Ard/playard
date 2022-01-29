@@ -35,7 +35,7 @@ This is a project that we have done to help other peoples who want to make a sim
 
 - ### SPI Display setup
 
-``` wiring
+``` cpp
 // Declaration for SSD1306 display connected using software SPI (default case):
 #define OLED_MOSI   4 //D1
 #define OLED_CLK   3  //D0
@@ -48,7 +48,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT,
 ```
 
 - ### I2C Display setup
-``` wiring
+``` cpp
 // Declaration for SSD1306 display connected using software I2C (default case):
 #define SCREEN_WIDTH 128	
 #define SCREEN_HEIGHT 64	
@@ -66,7 +66,7 @@ void setup() {
 ```
 
 - ### Displaying 'Hello World' on I2C display
-``` wiring
+``` cpp
 // Declaration for SSD1306 display connected using software I2C (default case):
 #define SCREEN_WIDTH 128	
 #define SCREEN_HEIGHT 64	
@@ -86,7 +86,7 @@ void setup() {
 ```
 
 - ### SD Card Write - Read and Random Selection code Example
-``` wiring
+``` cpp
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
