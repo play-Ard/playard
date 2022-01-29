@@ -65,7 +65,7 @@ void setup() {
           }
 ```
 
-- Screening Hello World on I2C display
+- Displaying 'Hello World' on I2C display
 ``` wiring
 // Declaration for SSD1306 display connected using software I2C (default case):
 #define SCREEN_WIDTH 128	
