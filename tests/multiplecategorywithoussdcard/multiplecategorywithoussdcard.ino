@@ -9,11 +9,11 @@
 
 int xPin = A0; 
 int yPin = A1; 
-int butonPin = 2; 
+int buttonPin = 2; 
 
-int xPozisyon;
-int yPozisyon;
-int butonDurum;
+int xPosition;
+int yPosition;
+int buttonFlag;
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
@@ -50,7 +50,7 @@ void setup() {
   Serial.begin(9600);
   pinMode(xPin, INPUT);
   pinMode(yPin, INPUT);
-  pinMode(butonPin, INPUT_PULLUP);
+  pinMode(buttonPin, INPUT_PULLUP);
 
   display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS);
   display.clearDisplay();
@@ -63,18 +63,18 @@ void setup() {
  
           }
  void loop(){
-  xPozisyon = analogRead(xPin);
-  yPozisyon = analogRead(yPin);
-  butonDurum = digitalRead(butonPin);
+  xPosition = analogRead(xPin);
+  yPosition = analogRead(yPin);
+  buttonFlag = digitalRead(buttonPin);
   
-  xPozisyon = map(xPozisyon, 0, 1023, 0, 128);
-  yPozisyon = map(yPozisyon, 0, 1023, 0, 32);
+  xPosition = map(xPosition, 0, 1023, 0, 128);
+  yPosition = map(yPosition, 0, 1023, 0, 32);
   Serial.print("X Pozisyonu: ");
-  Serial.print(xPozisyon);
+  Serial.print(xPosition);
   Serial.print(" | Y Pozisyonu: ");
-  Serial.print(yPozisyon);
+  Serial.print(yPosition);
   Serial.print(" | Buton Durum: ");
-  Serial.println(butonDurum);
+  Serial.println(buttonFlag);
   delay(100);
 
   randNumber = random(0, 4);
