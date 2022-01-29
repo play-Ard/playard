@@ -2,11 +2,13 @@
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
+
 // Declaration for SSD1306 display connected using software I2C (default case):
 #define SCREEN_WIDTH 128  
 #define SCREEN_HEIGHT 64  
-#define OLED_RESET -1     //- if your screen has no reset pin, you have to change that value to -1
+#define OLED_RESET -1 //- if your screen has no reset pin, you have to change that value to -1
 
+const long serialPort = 9600;
 int xPin = A0; 
 int yPin = A1; 
 int buttonPin = 2; 
@@ -18,36 +20,27 @@ int buttonFlag;
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 #define SCREEN_ADDRESS 0x3C
-const char *Listem[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
-const char *Listem2[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
-const char *Listem3[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
-const char *Listem4[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
-const char *Listem5[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
-const char *Listem6[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
-const char *Listem7[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
-const char *Listem8[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
-const char *Listem9[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
-const char *Listem10[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
-const char *Listem11[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
-const char *Listem12[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
-const char *Listem13[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
-const char *Listem14[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
-const char *Listem15[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
-const char *Listem16[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
-const char *Listem17[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
-const char *Listem18[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
-const char *Listem19[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
-const char *Listem20[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
-const char *Listem21[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
-const char *Listem22[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
-const char *Listem23[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
-const char *Listem24[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
 
-long randNumber;
+// Two dimensional list to hold questions
+// Maybe can be converted into HashMaps to categorize topics
+const int nRows = 4
+const int nColumns = 2
+const char *Questions[ rows ][ columns ] = { 
+  {'Where is the capital of Turkey?', 'How many legs do chickens have?'},
+  {'Father of Python?', 'Which is the moon of jupyter?'},
+  {'Which one is the default seperator for CSV files?', 'R or Python? :D'},
+  {'Full name of HP?', 'How old was Alan Turing when he died?'},
+}
+
+// Index of random category
+long randNRow;
+
+const long nShortDelay = 100;
+const long nLongDelay = 10000;
 
 void setup() {
   
-  Serial.begin(9600);
+  Serial.begin(serialPort);
   pinMode(xPin, INPUT);
   pinMode(yPin, INPUT);
   pinMode(buttonPin, INPUT_PULLUP);
@@ -61,52 +54,31 @@ void setup() {
   display.println("Hello World");
   display.display();
  
-          }
+}
+
  void loop(){
   xPosition = analogRead(xPin);
   yPosition = analogRead(yPin);
   buttonFlag = digitalRead(buttonPin);
   
-  xPosition = map(xPosition, 0, 1023, 0, 128);
-  yPosition = map(yPosition, 0, 1023, 0, 32);
-  Serial.print("X Pozisyonu: ");
+  xPosition = map(xPosition, 0, 1023, 0, SCREEN_WIDTH);
+  yPosition = map(yPosition, 0, 1023, 0, SCREEN_HEIGHT);
+  Serial.print("X Position: ");
   Serial.print(xPosition);
-  Serial.print(" | Y Pozisyonu: ");
+  Serial.print(" | Y Position: ");
   Serial.print(yPosition);
-  Serial.print(" | Buton Durum: ");
+  Serial.print(" | Button: ");
   Serial.println(buttonFlag);
-  delay(100);
+  delay(nShortDelay);
 
-  randNumber = random(0, 4);
-  display.println(Listem[randNumber]);
-  display.clearDisplay();
-  delay(10000);
-  display.display();
-  display.println(Listem7[randNumber]);
-  delay(10000);
-   display.clearDisplay();
-  delay(10000);
-  display.display();
-  display.println(Listem2[randNumber]);
-  delay(10000);
-   display.clearDisplay();
-  delay(10000);
-  display.display();
-  display.println(Listem3[randNumber]);
-  delay(10000);
-   display.clearDisplay();
-  delay(10000);
-  display.display();
-  display.println(Listem4[randNumber]);
-  delay(10000);
-   display.clearDisplay();
-  delay(10000);
-  display.display();
-  display.println(Listem5[randNumber]);
-  delay(10000);
-   display.clearDisplay();
-  delay(10000);
-  display.display();
-  display.println(Listem6[randNumber]);
-  delay(10000);
+  // Choosing random question for each category
+  for (int i = 0; i < nRows; i++)
+  {
+    randNRow = random(0, nColumns);
+    display.println(Questions[i][rand]);
+    display.clearDisplay();
+    delay(nLongDelay);
+    display.display()
+  }
+  
 }
