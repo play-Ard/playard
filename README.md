@@ -29,11 +29,11 @@ This is a project that we have done to help other peoples who want to make a sim
 
 ## Screenshots
 
-![Screenshot](photos/IMG-4930.jpg)
+![Screenshot](images/i2c-hello-world.png)
 
 ## Usage/Examples
 
-- SPI Display setup
+- ### SPI Display setup
 
 ``` wiring
 // Declaration for SSD1306 display connected using software SPI (default case):
@@ -47,7 +47,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT,
   OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
 ```
 
-- I2C Display setup
+- ### I2C Display setup
 ``` wiring
 // Declaration for SSD1306 display connected using software I2C (default case):
 #define SCREEN_WIDTH 128	
@@ -62,10 +62,10 @@ void setup() {
 
   display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS);
   
-          }
+}
 ```
 
-- Displaying 'Hello World' on I2C display
+- ### Displaying 'Hello World' on I2C display
 ``` wiring
 // Declaration for SSD1306 display connected using software I2C (default case):
 #define SCREEN_WIDTH 128	
@@ -82,7 +82,7 @@ void setup() {
   display.println("Hello World");
   display.display();
  
-          }
+}
 ```
 
 - SD Card Write - Read and Random Selection code Example
@@ -91,37 +91,48 @@ void setup() {
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
+
 // Declaration for SSD1306 display connected using software I2C (default case):
 #define SCREEN_WIDTH 128  
 #define SCREEN_HEIGHT 64  
-#define OLED_RESET -1     //- if your screen has no reset pin, you have to change that value to -1
+#define OLED_RESET -1 //- if your screen has no reset pin, you have to change that value to -1
 
+const long serialPort = 9600;
 int xPin = A0; 
 int yPin = A1; 
-int butonPin = 2; 
+int buttonPin = 2; 
 
-int xPozisyon;
-int yPozisyon;
-int butonDurum;
+int xPosition;
+int yPosition;
+int buttonFlag;
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 #define SCREEN_ADDRESS 0x3C
-const char *Listem[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
-const char *Listem2[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
-const char *Listem3[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
-const char *Listem4[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
-const char *Listem5[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
-const char *Listem6[] = {"Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?", "Falan filan nedir?"};
 
-long randNumber;
+// Two dimensional list to hold questions
+// Maybe can be converted into HashMaps to categorize topics
+const int nRows = 4
+const int nColumns = 2
+const char *Questions[ rows ][ columns ] = { 
+  {'Where is the capital of Turkey?', 'How many legs do chickens have?'},
+  {'Father of Python?', 'Which is the moon of jupyter?'},
+  {'Which one is the default seperator for CSV files?', 'R or Python? :D'},
+  {'Full name of HP?', 'How old was Alan Turing when he died?'},
+}
+
+// Index of random category
+long randNRow;
+
+const long nShortDelay = 100;
+const long nLongDelay = 10000;
 
 void setup() {
   
-  Serial.begin(9600);
+  Serial.begin(serialPort);
   pinMode(xPin, INPUT);
   pinMode(yPin, INPUT);
-  pinMode(butonPin, INPUT_PULLUP);
+  pinMode(buttonPin, INPUT_PULLUP);
 
   display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS);
   display.clearDisplay();
@@ -132,54 +143,33 @@ void setup() {
   display.println("Hello World");
   display.display();
  
-          }
- void loop(){
-  xPozisyon = analogRead(xPin);
-  yPozisyon = analogRead(yPin);
-  butonDurum = digitalRead(butonPin);
-  
-  xPozisyon = map(xPozisyon, 0, 1023, 0, 128);
-  yPozisyon = map(yPozisyon, 0, 1023, 0, 32);
-  Serial.print("X Pozisyonu: ");
-  Serial.print(xPozisyon);
-  Serial.print(" | Y Pozisyonu: ");
-  Serial.print(yPozisyon);
-  Serial.print(" | Buton Durum: ");
-  Serial.println(butonDurum);
-  delay(100);
+}
 
-  randNumber = random(0, 4);
-  display.println(Listem[randNumber]);
-  display.clearDisplay();
-  delay(10000);
-  display.display();
-  display.println(Listem7[randNumber]);
-  delay(10000);
-   display.clearDisplay();
-  delay(10000);
-  display.display();
-  display.println(Listem2[randNumber]);
-  delay(10000);
-   display.clearDisplay();
-  delay(10000);
-  display.display();
-  display.println(Listem3[randNumber]);
-  delay(10000);
-   display.clearDisplay();
-  delay(10000);
-  display.display();
-  display.println(Listem4[randNumber]);
-  delay(10000);
-   display.clearDisplay();
-  delay(10000);
-  display.display();
-  display.println(Listem5[randNumber]);
-  delay(10000);
-   display.clearDisplay();
-  delay(10000);
-  display.display();
-  display.println(Listem6[randNumber]);
-  delay(10000);
+ void loop(){
+  xPosition = analogRead(xPin);
+  yPosition = analogRead(yPin);
+  buttonFlag = digitalRead(buttonPin);
+  
+  xPosition = map(xPosition, 0, 1023, 0, SCREEN_WIDTH);
+  yPosition = map(yPosition, 0, 1023, 0, SCREEN_HEIGHT);
+  Serial.print("X Position: ");
+  Serial.print(xPosition);
+  Serial.print(" | Y Position: ");
+  Serial.print(yPosition);
+  Serial.print(" | Button: ");
+  Serial.println(buttonFlag);
+  delay(nShortDelay);
+
+  // Choosing random question for each category
+  for (int i = 0; i < nRows; i++)
+  {
+    randNRow = random(0, nColumns);
+    display.println(Questions[i][rand]);
+    display.clearDisplay();
+    delay(nLongDelay);
+    display.display()
+  }
+  
 }
 ```
 
