@@ -1,5 +1,5 @@
 
-# Playard
+# **PLAYARD**
 
 This is a project that we have done to help other peoples who want to make a similar project.
 
@@ -52,7 +52,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT,
 // Declaration for SSD1306 display connected using software I2C (default case):
 #define SCREEN_WIDTH 128	
 #define SCREEN_HEIGHT 64	
-#define OLED_RESET 4		 - if your screen has no reset pin, you have to change that value to -1
+#define OLED_RESET 4 // if your screen has no reset pin, that value must be -1
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
@@ -70,7 +70,7 @@ void setup() {
 // Declaration for SSD1306 display connected using software I2C (default case):
 #define SCREEN_WIDTH 128	
 #define SCREEN_HEIGHT 64	
-#define OLED_RESET 4		 - if your screen has no reset pin, you have to change that value to -1
+#define OLED_RESET 4 // if your screen has no reset pin, that value must be -1
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
@@ -173,6 +173,127 @@ void setup() {
 }
 ```
 
+- ### Read and Display External Data from with Flask and Heroku Example
+
+**Python**:
+```python
+from flask import Flask, jsonify
+from flask_restful import Resource, Api
+from flask_cors import CORS
+
+app = Flask(__name__)
+api = Api(app)
+CORS(app)
+
+questions = {"questions":"Turkiyenin en buyuk dagi?","answers":'Agri Dagi'}
+
+class status (Resource):
+    def get(self):
+        try:
+            return {'data': 'Api is Running'}
+        except:
+            return {'data': 'An Error Occurred during fetching Api'}
+
+class Questions(Resource):
+    def get(self):
+        return jsonify(questions)
 
 
- 
+api.add_resource(status, '/')
+
+api.add_resource(Questions, '/questions/')
+
+if __name__ == '__main__':
+    app.run()
+```
+
+**Arduino**:
+```cpp
+#include <SPI.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+// Declaration for SSD1306 display connected using software I2C (default case):
+#define SCREEN_WIDTH 128  
+#define SCREEN_HEIGHT 64  
+#define OLED_RESET -1     //- if your screen has no reset pin, you have to change that value to -1
+
+// Wifi and HTTP libraries
+#include <ESP8266WiFi.h>
+#include <ESP8266HTTPClient.h>
+#include <WiFiClient.h>
+
+#include <ArduinoJson.h>  // to parse the resulting data.
+
+const char* ssid = "WiFi_ssid";
+const char* password = "WiFi_password";
+
+HTTPClient http;
+
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+#define SCREEN_ADDRESS 0x3C
+
+void setup() {
+
+  display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS);
+  display.clearDisplay();
+
+  Serial.begin(115200);
+
+  WiFi.begin(ssid, password);
+
+  while (WiFi.status() != WL_CONNECTED) {
+
+    delay(1000);
+    Serial.print("Connecting..");}
+
+}
+void loop() {
+
+  if (WiFi.status() == WL_CONNECTED) { //Check WiFi connection status
+
+      WiFiClient client;
+      HTTPClient http;
+
+    http.begin(client, "http://play-ard.herokuapp.com/questions/");  //Specify request destination
+    int httpCode = http.GET();                                  //Send the request
+
+    if (httpCode > 0) { //Check the returning code
+
+        DynamicJsonDocument doc(400); //For ESP32/ESP8266 you'll mainly use dynamic.
+
+        DeserializationError error = deserializeJson(doc, client);
+        String json = http.getString();
+        if (!error) {
+          String question = doc["questions"]; 
+          String answer = doc["answers"]; 
+
+          display.clearDisplay();
+          display.setTextSize(1);
+          display.setTextColor(WHITE);
+          display.setCursor(0, 10);
+          display.println("--------");
+          display.println(question);
+          display.println("--------");
+          display.println(answer);
+          display.display();
+
+          Serial.print("------");
+          Serial.print(question);
+          Serial.print(answer);
+          Serial.print("------");
+          
+          
+  } else {
+    Serial.print(F("deserializeJson() failed: "));
+    Serial.println(error.f_str());
+    return;
+  }
+         //Get the request response payload
+    }
+    http.end();   //Close connection
+  }
+  delay(1000);    //Send a request every 30 seconds
+}
+```
