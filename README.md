@@ -173,7 +173,7 @@ void setup() {
 }
 ```
 
-- ### Read and Display External Data from with Flask and Heroku Example
+- ### IOT - Read and Display External Data with Flask and Heroku Example
 
 **Python**:
 ```python
