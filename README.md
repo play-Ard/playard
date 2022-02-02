@@ -86,7 +86,7 @@ void setup() {
 }
 ```
 
-- ### SD Card Write - Read and Random Selection code Example
+- ### Read and Random Selection code Example
 ``` cpp
 #include <SPI.h>
 #include <Wire.h>
