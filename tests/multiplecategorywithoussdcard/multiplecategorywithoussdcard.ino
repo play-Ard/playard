@@ -8,18 +8,6 @@
 #define SCREEN_HEIGHT 64  
 #define OLED_RESET -1 //- if your screen has no reset pin, you have to change that value to -1
 
-const long serialPort = 9600;
-int xPin = A0; 
-int yPin = A1; 
-int buttonPin = 2; 
-
-int xPosition;
-int yPosition;
-int buttonFlag;
-
-const long joyMaxValue = 1023;
-const int joyMinValue = 0;
-
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 #define SCREEN_ADDRESS 0x3C
@@ -39,39 +27,15 @@ const char *Questions[ rows ][ columns ] = {
 long randNRow;
 
 const long shortDelay = 100;
-const long longDelay = 10000;
+const long longDelay = 1000;
 
 void setup() {
-  
-  Serial.begin(serialPort);
-  pinMode(xPin, INPUT);
-  pinMode(yPin, INPUT);
-  pinMode(buttonPin, INPUT_PULLUP);
-
   display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS);
   display.clearDisplay();
   display.display();
-  display.setTextSize(1);
-  display.setTextColor(WHITE);
-  display.setCursor(0, 10);
-  display.println("Hello World");
-  display.display();
- 
 }
 
  void loop(){
-  xPosition = analogRead(xPin);
-  yPosition = analogRead(yPin);
-  buttonFlag = digitalRead(buttonPin);
-  
-  xPosition = map(xPosition, joyMinValue, joyMaxValue, 0, SCREEN_WIDTH);
-  yPosition = map(yPosition, joyMinValue, joyMaxValue, 0, SCREEN_HEIGHT);
-  Serial.print("X Position: ");
-  Serial.print(xPosition);
-  Serial.print(" | Y Position: ");
-  Serial.print(yPosition);
-  Serial.print(" | Button: ");
-  Serial.println(buttonFlag);
   delay(shortDelay);
 
   // Choosing random question for each category
@@ -83,5 +47,4 @@ void setup() {
     delay(longDelay);
     display.display();
   }
-  
 }

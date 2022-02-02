@@ -1,4 +1,4 @@
-# Getting Analog Input from Joystick and Display Values with SSD1306
+# Displaying Random Questions from Different Categories
 
 ## Required Components
 
@@ -19,18 +19,3 @@
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 ```
-
-### Joystick Connection and Set Up
-
-[<img src="../../images/joystick-connection.png">]()
-
-```cpp
-const int xPin = A0; 
-const int yPin = A1; 
-const int buttonPin = 2; 
-
-void setup() {
-    pinMode(xPin, INPUT);
-    pinMode(yPin, INPUT);
-    pinMode(buttonPin, INPUT_PULLUP);
-}
