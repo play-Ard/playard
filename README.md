@@ -25,6 +25,7 @@ This is a project that we have done to help other peoples who want to make a sim
 ## Helpful Resources
 
 - Oled Display Tutorial : https://randomnerdtutorials.com/guide-for-oled-display-with-arduino/
+- Deploying Flask Application to Heroku : https://stackabuse.com/deploying-a-flask-application-to-heroku/
 
 
 ## Screenshots
@@ -112,20 +113,20 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 // Two dimensional list to hold questions
 // Maybe can be converted into HashMaps to categorize topics
-const int nRows = 4
-const int nColumns = 2
+const int nRows = 4;
+const int nColumns = 2;
 const char *Questions[ rows ][ columns ] = { 
   {'Where is the capital of Turkey?', 'How many legs do chickens have?'},
   {'Father of Python?', 'Which is the moon of jupyter?'},
   {'Which one is the default seperator for CSV files?', 'R or Python? :D'},
   {'Full name of HP?', 'How old was Alan Turing when he died?'},
-}
+};
 
 // Index of random category
 long randNRow;
 
-const long nShortDelay = 100;
-const long nLongDelay = 10000;
+const long shortDelay = 100;
+const long longDelay = 10000;
 
 void setup() {
   
@@ -158,7 +159,7 @@ void setup() {
   Serial.print(yPosition);
   Serial.print(" | Button: ");
   Serial.println(buttonFlag);
-  delay(nShortDelay);
+  delay(shortDelay);
 
   // Choosing random question for each category
   for (int i = 0; i < nRows; i++)
@@ -166,10 +167,9 @@ void setup() {
     randNRow = random(0, nColumns);
     display.println(Questions[i][rand]);
     display.clearDisplay();
-    delay(nLongDelay);
-    display.display()
+    delay(longDelay);
+    display.display();
   }
-  
 }
 ```
 
@@ -229,6 +229,11 @@ if __name__ == '__main__':
 const char* ssid = "WiFi_ssid";
 const char* password = "WiFi_password";
 
+const long serialPort = 115200;
+
+const long longDelay = 1000;
+const long shortDelay = 100;
+
 HTTPClient http;
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
@@ -239,7 +244,7 @@ void setup() {
   display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS);
   display.clearDisplay();
 
-  Serial.begin(115200);
+  Serial.begin(serialPort);
 
   WiFi.begin(ssid, password);
 
@@ -294,6 +299,6 @@ void loop() {
     }
     http.end();   //Close connection
   }
-  delay(1000);    //Send a request every 30 seconds
+  delay(longDelay);    //Send a request every 30 seconds
 }
 ```

@@ -18,6 +18,10 @@
 const char* ssid = "WiFi_ssid";
 const char* password = "WiFi_password";
 
+const long serialPort = 115200;
+
+const long longDelay = 1000;
+
 HTTPClient http;
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
@@ -28,13 +32,13 @@ void setup() {
   display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS);
   display.clearDisplay();
 
-  Serial.begin(115200);
+  Serial.begin(serialPort);
 
   WiFi.begin(ssid, password);
 
   while (WiFi.status() != WL_CONNECTED) {
 
-    delay(1000);
+    delay(longDelay);
     Serial.print("Connecting..");}
 
 }
@@ -83,5 +87,5 @@ void loop() {
     }
     http.end();   //Close connection
   }
-  delay(1000);    //Send a request every 30 seconds
+  delay(longDelay);    //Send a request every 30 seconds
 }

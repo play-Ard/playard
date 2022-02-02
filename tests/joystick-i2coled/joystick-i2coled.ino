@@ -7,13 +7,19 @@
 #define SCREEN_HEIGHT 64  
 #define OLED_RESET -1     //- if your screen has no reset pin, you have to change that value to -1
 
-int xPin = A0; 
-int yPin = A1; 
-int buttonPin = 2; 
+const int xPin = A0; 
+const int yPin = A1; 
+const int buttonPin = 2; 
+const long serialPort = 9600;
 
 int xPosition;
 int yPosition;
 int buttonFlag;
+
+const long joyMaxValue = 1023;
+const long joyMinValue = 0;
+
+const int shortDelay = 100;
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
@@ -21,7 +27,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 void setup() {
 
-  Serial.begin(9600);
+  Serial.begin(serialPort);
   pinMode(xPin, INPUT);
   pinMode(yPin, INPUT);
   pinMode(buttonPin, INPUT_PULLUP);
@@ -35,21 +41,22 @@ void setup() {
   display.println("Hello World");
   display.display();
  
-          }
- void loop(){
+}
+
+void loop(){
   xPosition = analogRead(xPin);
   yPosition = analogRead(yPin);
   buttonFlag = digitalRead(buttonPin);
 
-  xPosition = map(xPosition, 0, 1023, 0, 128);
-  yPosition = map(yPosition, 0, 1023, 0, 32);
-  Serial.print("X Pozisyonu: ");
+  xPosition = map(xPosition, joyMinValue, joyMaxValue, 0, SCREEN_WIDTH);
+  yPosition = map(yPosition, joyMinValue, joyMaxValue, 0, SCREEN_HEIGHT);
+  Serial.print("X Position: ");
   Serial.print(xPosition);
-  Serial.print(" | Y Pozisyonu: ");
+  Serial.print(" | Y Position: ");
   Serial.print(yPosition);
-  Serial.print(" | Buton Durum: ");
+  Serial.print(" | Button Flag: ");
   Serial.println(buttonFlag);
-  delay(100);
+  delay(shortDelay);
   display.writePixel(xPosition, yPosition, WHITE);
   display.display();
 }

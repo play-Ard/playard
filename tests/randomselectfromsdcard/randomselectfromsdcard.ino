@@ -6,8 +6,10 @@
 #define MISO  22
 #define MOSI  19
 #define CS  0
+const long serialPort = 115200;
 
 long randNumber;
+
 
 void readFile(fs::FS &fs, const char * path){
   Serial.printf("Reading file: %s\n", path);
@@ -41,23 +43,23 @@ void writeFile(fs::FS &fs, const char * path, const char * message){
 }
 
 void setup(){
-  Serial.begin(115200);
+  Serial.begin(serialPort);
   SPIClass spi = SPIClass(VSPI);
   spi.begin(SCK, MISO, MOSI, CS);
 
   SD.begin(CS,spi,80000000);
 
-  const char *Listem[] = {"/soru1.txt", "/soru2.txt", "/soru3.txt", "/soru4.txt"};
+  const char *filesList[] = {"/question1.txt", "/question2.txt", "/question3.txt", "/question4.txt"};
   randNumber = random(0, 4);
     Serial.println(Listem[randNumber]);
-  writeFile(SD, "/soru1.txt", "Ağrı 1");
-  writeFile(SD, "/soru2.txt", "Ağrı 2");
-  writeFile(SD, "/soru3.txt", "Ağrı 3");
-  writeFile(SD, "/soru4.txt", "Ağrı 4");
-  readFile(SD, Listem[randNumber]);
-  readFile(SD, Listem[randNumber]);
+  writeFile(SD, "/question1.txt", "Ağrı 1");
+  writeFile(SD, "/question2.txt", "Ağrı 2");
+  writeFile(SD, "/question3.txt", "Ağrı 3");
+  writeFile(SD, "/question4.txt", "Ağrı 4");
+  readFile(SD, filesList[randNumber]);
+  readFile(SD, filesList[randNumber]);
   Serial.println("-------------");
-  Serial.println(Listem[randNumber]);
+  Serial.println(filesList[randNumber]);
   Serial.println("-------------");
 }
 void loop(){

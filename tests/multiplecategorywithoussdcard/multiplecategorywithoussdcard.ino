@@ -17,26 +17,29 @@ int xPosition;
 int yPosition;
 int buttonFlag;
 
+const long joyMaxValue = 1023;
+const int joyMinValue = 0;
+
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 #define SCREEN_ADDRESS 0x3C
 
 // Two dimensional list to hold questions
 // Maybe can be converted into HashMaps to categorize topics
-const int nRows = 4
-const int nColumns = 2
+const int nRows = 4;
+const int nColumns = 2;
 const char *Questions[ rows ][ columns ] = { 
   {'Where is the capital of Turkey?', 'How many legs do chickens have?'},
   {'Father of Python?', 'Which is the moon of jupyter?'},
   {'Which one is the default seperator for CSV files?', 'R or Python? :D'},
   {'Full name of HP?', 'How old was Alan Turing when he died?'},
-}
+};
 
 // Index of random category
 long randNRow;
 
-const long nShortDelay = 100;
-const long nLongDelay = 10000;
+const long shortDelay = 100;
+const long longDelay = 10000;
 
 void setup() {
   
@@ -61,15 +64,15 @@ void setup() {
   yPosition = analogRead(yPin);
   buttonFlag = digitalRead(buttonPin);
   
-  xPosition = map(xPosition, 0, 1023, 0, SCREEN_WIDTH);
-  yPosition = map(yPosition, 0, 1023, 0, SCREEN_HEIGHT);
+  xPosition = map(xPosition, joyMinValue, joyMaxValue, 0, SCREEN_WIDTH);
+  yPosition = map(yPosition, joyMinValue, joyMaxValue, 0, SCREEN_HEIGHT);
   Serial.print("X Position: ");
   Serial.print(xPosition);
   Serial.print(" | Y Position: ");
   Serial.print(yPosition);
   Serial.print(" | Button: ");
   Serial.println(buttonFlag);
-  delay(nShortDelay);
+  delay(shortDelay);
 
   // Choosing random question for each category
   for (int i = 0; i < nRows; i++)
@@ -77,8 +80,8 @@ void setup() {
     randNRow = random(0, nColumns);
     display.println(Questions[i][rand]);
     display.clearDisplay();
-    delay(nLongDelay);
-    display.display()
+    delay(longDelay);
+    display.display();
   }
   
 }
