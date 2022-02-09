@@ -3,19 +3,22 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 // Declaration for SSD1306 display connected using software I2C (default case):
-#define SCREEN_WIDTH 128  
-#define SCREEN_HEIGHT 64  
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
 #define OLED_RESET -1     //- if your screen has no reset pin, you have to change that value to -1
 
-const int xPin = A0; 
-const int yPin = A1; 
-const int buttonPin = 2; 
+// Connections of analog joystick pins
+const int xPin = A0;
+const int yPin = A1;
+const int buttonPin = 2;
+
 const long serialPort = 9600;
 
 int xPosition;
 int yPosition;
 int buttonFlag;
 
+// Refers to the maximum value read from the joystick for each side
 const long joyMaxValue = 1023;
 const long joyMinValue = 0;
 
@@ -40,23 +43,31 @@ void setup() {
   display.setCursor(0, 10);
   display.println("Hello World");
   display.display();
- 
+
 }
 
-void loop(){
+void loop() {
   xPosition = analogRead(xPin);
   yPosition = analogRead(yPin);
   buttonFlag = digitalRead(buttonPin);
 
-  xPosition = map(xPosition, joyMinValue, joyMaxValue, 0, SCREEN_WIDTH);
-  yPosition = map(yPosition, joyMinValue, joyMaxValue, 0, SCREEN_HEIGHT);
+  // The received position values ​​must be converted to be displayed on the screen.
+  xPosition = map(xPosition, joyMinValue, joyMaxValue, SCREEN_WIDTH - 1, 0);
+  yPosition = map(yPosition, joyMinValue, joyMaxValue, SCREEN_HEIGHT - 1, 0);
+  
+  printValues();
+
+  delay(shortDelay);
+
+  display.writePixel(xPosition, yPosition, WHITE);
+  display.display();
+}
+
+void printValues() {
   Serial.print("X Position: ");
   Serial.print(xPosition);
   Serial.print(" | Y Position: ");
   Serial.print(yPosition);
   Serial.print(" | Button Flag: ");
   Serial.println(buttonFlag);
-  delay(shortDelay);
-  display.writePixel(xPosition, yPosition, WHITE);
-  display.display();
 }
