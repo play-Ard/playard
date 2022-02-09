@@ -55,7 +55,7 @@ void loop() {
   xPosition = map(xPosition, joyMinValue, joyMaxValue, SCREEN_WIDTH - 1, 0);
   yPosition = map(yPosition, joyMinValue, joyMaxValue, SCREEN_HEIGHT - 1, 0);
   
-  printValues();
+  printJoyValues();
 
   delay(shortDelay);
 
@@ -63,7 +63,7 @@ void loop() {
   display.display();
 }
 
-void printValues() {
+void printJoyValues() {
   Serial.print("X Position: ");
   Serial.print(xPosition);
   Serial.print(" | Y Position: ");
