@@ -114,7 +114,21 @@ void createGameUI() {
   display.display();
 }
 
-void drawRectCentered(int w, int h, int color, bool fill = false) {
+void drawRectCentered(int w, int h, int color) {
+/*
+  Draws a unfilled rectangle in the center of the screen according to given parameters
+  
+  Parameters: {
+    w: Width of rectangle
+    h: Height of rectangle
+    color: Color of rectangle
+  }
+  */
+
+  display.drawRect((display.width() - w) / 2, (display.height() - h) / 2, w, h, color);
+}
+
+void drawRectCentered(int w, int h, int color, bool fill) {
   /*
   Draws a rectangle in the center of the screen according to given parameters
   
@@ -122,7 +136,7 @@ void drawRectCentered(int w, int h, int color, bool fill = false) {
     w: Width of rectangle
     h: Height of rectangle
     color: Color of rectangle
-    fill: Fill the rectangle?
+    (optional)fill: Fill the rectangle? (default: false)
   }
   */
 
