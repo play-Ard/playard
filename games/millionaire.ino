@@ -15,10 +15,6 @@ const int buttonPin = 2;
 
 const long serialPort = 9600;
 
-int xPosition;
-int yPosition;
-int buttonFlag;
-
 // Refers to the max and min values can be read from the joystick
 const long joyMaxValue = 1023;
 const long joyMinValue = 0;
@@ -26,19 +22,95 @@ const long joyMinValue = 0;
 const int shortDelay = 200;
 
 // Refers to currently selected option by user
-long currentOption = 0;
+int currentOption = 0;
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 #define SCREEN_ADDRESS 0x3C
 
+
+// Class declarations
+class UserInteract
+{
+  private:
+    int xPin;
+    int yPin;
+    int buttonPin;
+    
+    long xPosition;
+    long yPosition;
+    int buttonFlag;
+
+  public:
+    UserInteract (int xPin, int yPin, int buttonPin){
+      this->xPin = xPin;
+      this->yPin = yPin;
+      this->buttonPin = buttonPin;
+    }
+
+    void begin() {
+      pinMode(this->xPin, INPUT);
+      pinMode(this->yPin, INPUT);
+      pinMode(this->buttonPin, INPUT_PULLUP);
+    }
+
+    void readValues() {
+      xPosition = analogRead(this->xPin);
+      xPosition = map(xPosition, joyMinValue, joyMaxValue, SCREEN_WIDTH - 1, 0);
+      
+      yPosition = analogRead(this->yPin);
+      yPosition = map(yPosition, joyMinValue, joyMaxValue, SCREEN_HEIGHT - 1, 0);
+
+      buttonFlag = abs(digitalRead(this->buttonPin) - 1);
+    }
+
+    void print() {
+      Serial.print("X Position: ");
+      Serial.print(this->getXPosition());
+      Serial.print(" | Y Position: ");
+      Serial.print(this->getYPosition());
+      Serial.print(" | Button Flag: ");
+      Serial.println(this->getButtonFlag());
+    }
+    
+    long getXPosition() {
+      return this->xPosition;
+    }
+    
+    long getYPosition() {
+      return this->yPosition;
+    }
+    
+    int getButtonFlag() {
+      return this->buttonFlag;
+    }
+
+    bool BUTTON () {
+      return this->getButtonFlag() == 1;
+    }
+
+    bool RIGHT () {
+      return this->getXPosition() == SCREEN_WIDTH - 1;
+    }
+    
+    bool LEFT () {
+      return this->getXPosition() == 0;
+    }
+
+    bool UP () {
+      return this->getYPosition() == 0;
+    }
+
+    bool DOWN () {
+      return this->getYPosition() == SCREEN_HEIGHT - 1;
+    }
+};
+
+UserInteract userInteract(xPin, yPin, buttonPin);
+
 void setup() {
-
   Serial.begin(serialPort);
-  pinMode(xPin, INPUT);
-  pinMode(yPin, INPUT);
-  pinMode(buttonPin, INPUT_PULLUP);
-
+  userInteract.begin();
   display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS);
   display.clearDisplay();
   display.display();
@@ -47,60 +119,16 @@ void setup() {
 }
 
 void loop() {
-  setXPosition();
-  setYPosition();
-  setButtonFlag();
-
+  userInteract.readValues();
+  userInteract.print();
   createGameUI();
-}
-
-void setXPosition() {
-  /* 
-  Reads the horizontal position value from the analog 
-  joystick and adjusts this value according to the screen width.
-  Left side of screen: 0
-  Right side of screen: 127
-  */
-  xPosition = analogRead(xPin);
-  xPosition = map(xPosition, joyMinValue, joyMaxValue, SCREEN_WIDTH - 1, 0);
-}
-
-void setYPosition() {
-  /* 
-  Reads the vertical position value from the analog 
-  joystick and adjusts this value according to the screen height.
-  Top side of screen: 0
-  Bottom side of screen: 63
-  */
-  yPosition = analogRead(yPin);
-  yPosition = map(yPosition, joyMinValue, joyMaxValue, SCREEN_HEIGHT - 1, 0);
-}
-
-void setButtonFlag() {
-  /* 
-  Reads the button position value from the analog joystick
-  0 - Unpressed
-  1 - Pressed
-  */
-  buttonFlag = abs(digitalRead(buttonPin) - 1);
-}
-
-void printJoyValues() {
-  /* 
-  Prints received joystick values to Serial Port Monitor
-  */
-  Serial.print("X Position: ");
-  Serial.print(xPosition);
-  Serial.print(" | Y Position: ");
-  Serial.print(yPosition);
-  Serial.print(" | Button Flag: ");
-  Serial.println(buttonFlag);
 }
 
 void createGameUI() {
   /*
   Creates and displays some basic UI elements for game
   */
+  display.clearDisplay();
   int rectW = 120;
   int rectH = 56;
   // Draws centered rectangle   
@@ -188,15 +216,15 @@ void setCursorVerCenter(String text, long leftMargin) {
 
 void displayOptions() {
   /* 
-  Displays some options in the center of the screen
+  Displays some options horizontally centered
   */
   int n = 4;
   char options[n] = { 'A', 'B', 'C', 'D'};
   String seperator = "  ";
 
   String sOptions = convertToString(options, n, seperator);
-  setCursorHorCenter(sOptions, 30);
   chooseOption(n);
+  setCursorHorCenter(sOptions, 30);
 
   for (size_t i = 0; i < n; i++)
   {
@@ -206,10 +234,9 @@ void displayOptions() {
     else {
       display.setTextColor(WHITE, BLACK);
     }
-
     display.print(options[i]);
 
-    display.setTextColor(WHITE);
+    display.setTextColor(WHITE, BLACK);
     display.print(seperator);
   }
 }
@@ -223,15 +250,23 @@ void chooseOption(int n) {
     n: Number of options
   }
   */
-  if (xPosition == 127) {
+
+  if (userInteract.BUTTON()) {
+    String text = currentOption + " PRESSED!";
+    setCursorHorCenter(text, 100);
+    Serial.println(text);
+  }
+
+  else if (userInteract.RIGHT()) {
     currentOption = (((currentOption + 1) % n) + n) % n;
     delay(shortDelay);
   }
 
-  if (xPosition == 0) {
+  else if (userInteract.LEFT()) {
     currentOption = (((currentOption - 1) % n) + n) % n;
     delay(shortDelay);
   }
+
 }
 
 String convertToString(char* a, int size, String sep)
