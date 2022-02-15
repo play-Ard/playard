@@ -252,8 +252,9 @@ void chooseOption(int n) {
   */
 
   if (userInteract.BUTTON()) {
-    String text = String(currentOption) + " PRESSED!";
+    String text = "SELECTED: " + String(currentOption);
     setCursorHorCenter(text, 100);
+    display.print(text);
     Serial.println(text);
   }
 
