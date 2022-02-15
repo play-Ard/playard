@@ -252,7 +252,7 @@ void chooseOption(int n) {
   */
 
   if (userInteract.BUTTON()) {
-    String text = currentOption + " PRESSED!";
+    String text = String(currentOption) + " PRESSED!";
     setCursorHorCenter(text, 100);
     Serial.println(text);
   }
