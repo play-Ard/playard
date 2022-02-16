@@ -1,7 +1,10 @@
-#include <SPI.h>
-#include <Wire.h>
-#include <Adafruit_GFX.h>
+#include <WiFi.h>
+#include <HTTPClient.h>
+#include <WiFiClient.h>
+#include <ArduinoJson.h>  // to parse the resulting data.
 #include <Adafruit_SSD1306.h>
+
+// ---------------------------- VARIABLES ---------------------------------------
 
 // Declaration for SSD1306 display connected using software I2C (default case):
 #define SCREEN_WIDTH 128
@@ -14,6 +17,8 @@ const int yPin = A1;
 const int buttonPin = 2;
 
 const long serialPort = 9600;
+const char* ssid = "Wokwi-GUEST";
+const char* password = "";
 
 // Refers to the max and min values can be read from the joystick
 const long joyMaxValue = 1023;
@@ -25,11 +30,52 @@ const int shortDelay = 200;
 int currentOption = 0;
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
-
 #define SCREEN_ADDRESS 0x3C
 
+// -------------------------- END OF VARIABLES ------------------------------------
 
-// Class declarations
+
+// -------------------------- CLASS DECLARATIONS ----------------------------------
+
+class WebInterface {
+  private:
+    WiFiClient wifiClient;
+    HTTPClient httpClient;
+    const long connectionDelay = 200;
+    long ardJsonMemory = 1000;
+  public:
+    void begin(const char* ssid, const char* password) {
+        WiFi.begin(ssid, password);
+        while (!this->isConnected()) {
+            delay(this->connectionDelay);
+        }
+        Serial.println("Connected");
+    }
+
+    bool isConnected() {
+        return WiFi.status() == WL_CONNECTED;
+    }
+
+    long request(const char* url) {
+      this->httpClient.begin(this->wifiClient, url);
+      return httpClient.GET();
+    }
+
+    DynamicJsonDocument getJSON() {
+      DynamicJsonDocument doc(this->ardJsonMemory);
+      deserializeJson(doc, this->httpClient.getString());
+      return doc;
+    }
+
+    void setArdJsonMemory(long mem) {
+      this->ardJsonMemory = mem;
+    }
+
+    void release() {
+      this->httpClient.end();
+    }
+};
+
 class UserInteract
 {
   private:
@@ -66,11 +112,11 @@ class UserInteract
 
     void print() {
       Serial.print("X Position: ");
-      Serial.print(this->getXPosition());
+      Serial.print(this->xPosition);
       Serial.print(" | Y Position: ");
-      Serial.print(this->getYPosition());
+      Serial.print(this->yPosition);
       Serial.print(" | Button Flag: ");
-      Serial.println(this->getButtonFlag());
+      Serial.println(this->buttonFlag);
     }
     
     long getXPosition() {
@@ -106,16 +152,35 @@ class UserInteract
     }
 };
 
+// ----------------------- END OF CLASS DECLARATIONS ----------------------------
+
+
+// ----------------------- INITILIZATIONS ---------------------------------------
+
 UserInteract userInteract(xPin, yPin, buttonPin);
+WebInterface webInterface;
+
+// ----------------------- END OF INITILIZATIONS --------------------------------
+
 
 void setup() {
   Serial.begin(serialPort);
-  userInteract.begin();
+  userInteract.begin(ssid, password);
+  webInterface.begin();
   display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS);
   display.clearDisplay();
   display.display();
   display.setTextSize(1);
   display.setTextColor(WHITE);
+
+  long httpCode = webInterface.request("http://play-ard.herokuapp.com/questions/");
+  if (webInterface.isConnected()) {
+    if (httpCode > 0) {
+      DynamicJsonDocument jsondoc = webInterface.getJSON();
+      String answers = jsondoc["answers"];
+    }
+  }
+  webInterface.release();
 }
 
 void loop() {
@@ -253,9 +318,8 @@ void chooseOption(int n) {
 
   if (userInteract.BUTTON()) {
     String text = "SELECTED: " + String(currentOption);
-    setCursorHorCenter(text, 100);
+    setCursorHorCenter(text, 50);
     display.print(text);
-    Serial.println(text);
   }
 
   else if (userInteract.RIGHT()) {
