@@ -27,7 +27,7 @@ const long joyMinValue = 0;
 const int shortDelay = 200;
 
 // Refers to currently selected option by user
-int currentOption = 0;
+int currentAnswer = 0;
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 #define SCREEN_ADDRESS 0x3C
@@ -185,7 +185,7 @@ void setup() {
 
 void loop() {
   userInteract.readValues();
-  userInteract.print();
+  userInteract.print(); 
   createGameUI();
 }
 
@@ -293,7 +293,7 @@ void displayOptions() {
 
   for (size_t i = 0; i < n; i++)
   {
-    if (i == currentOption) {
+    if (i == currentAnswer) {
       display.setTextColor(BLACK, WHITE);
     }
     else {
@@ -317,18 +317,18 @@ void chooseOption(int n) {
   */
 
   if (userInteract.BUTTON()) {
-    String text = "SELECTED: " + String(currentOption);
+    String text = "SELECTED: " + String(currentAnswer);
     setCursorHorCenter(text, 50);
     display.print(text);
   }
 
   else if (userInteract.RIGHT()) {
-    currentOption = (((currentOption + 1) % n) + n) % n;
+    currentAnswer = (((currentAnswer + 1) % n) + n) % n;
     delay(shortDelay);
   }
 
   else if (userInteract.LEFT()) {
-    currentOption = (((currentOption - 1) % n) + n) % n;
+    currentAnswer = (((currentAnswer - 1) % n) + n) % n;
     delay(shortDelay);
   }
 

@@ -90,12 +90,24 @@ class UserInteract
 
   public:
     UserInteract (int xPin, int yPin, int buttonPin){
+      /*
+      Init function for UserInteract class
+
+      Parameters {
+        xPin: Pin to read horizontal position of analog joystick
+        yPin: Pin to read vertical position of analog joystick
+        buttonPin: Pin to read case of button on the analog joystick
+      } 
+      */
       this->xPin = xPin;
       this->yPin = yPin;
       this->buttonPin = buttonPin;
     }
 
     void begin() {
+      /*
+      Makes some configurations to read the values properly
+      */
       pinMode(this->xPin, INPUT);
       pinMode(this->yPin, INPUT);
       pinMode(this->buttonPin, INPUT_PULLUP);
