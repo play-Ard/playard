@@ -14,7 +14,7 @@
 // Declaration for Joystick
 const int xPin = 35;
 const int yPin = 32;
-const int buttonPin = 34;
+const int buttonPin = 4;
 
 const long serialPort = 9600;
 const int shortDelay = 200;
