@@ -165,6 +165,22 @@ class UserInteract
     }
 };
 
+class Frame {
+  private:
+    int w;
+    int h;
+    int startX;
+    int startY;
+    bool haveFrame = false;
+  public:
+    Frame(int w, int h, int startX, int startY) {
+      this->w = w;
+      this->h = h;
+      this->startX = startX;
+      this->startY = startY;
+    }
+};
+
 // ----------------------- END OF CLASS DECLARATIONS ----------------------------
 
 
