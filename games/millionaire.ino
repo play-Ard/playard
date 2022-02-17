@@ -1,7 +1,6 @@
-#include <WiFi.h>
-#include <HTTPClient.h>
-#include <WiFiClient.h>
-#include <ArduinoJson.h>  // to parse the resulting data.
+// #include <HTTPClient.h>
+// #include <WiFiClient.h>
+// #include <ArduinoJson.h>  // to parse the resulting data.
 #include <Adafruit_SSD1306.h>
 
 // ---------------------------- VARIABLES ---------------------------------------
@@ -17,17 +16,24 @@ const int yPin = A1;
 const int buttonPin = 2;
 
 const long serialPort = 9600;
+const int shortDelay = 250;
 const char* ssid = "Wokwi-GUEST";
 const char* password = "";
+long EVENT_OPTION_PREVTIME = 0;
+long EVENT_OPTION_CURTIME = 0;
 
 // Refers to the max and min values can be read from the joystick
-const long joyMaxValue = 1023;
-const long joyMinValue = 0;
+const int p_joyMaxValue = 1023;
+const int p_joyMinValue = 0;
+const int joyMaxXValue = SCREEN_WIDTH - 1;
+const int joyMinXValue = 0;
+const int joyMaxYValue = SCREEN_HEIGHT - 1;
+const int joyMinYValue = 0;
 
-const int shortDelay = 200;
-
-// Refers to currently selected option by user
+// Declarations for game mechanics
 int currentAnswer = 0;
+String questions;
+String answers; 
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 #define SCREEN_ADDRESS 0x3C
@@ -37,44 +43,44 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 // -------------------------- CLASS DECLARATIONS ----------------------------------
 
-class WebInterface {
-  private:
-    WiFiClient wifiClient;
-    HTTPClient httpClient;
-    const long connectionDelay = 200;
-    long ardJsonMemory = 1000;
-  public:
-    void begin(const char* ssid, const char* password) {
-        WiFi.begin(ssid, password);
-        while (!this->isConnected()) {
-            delay(this->connectionDelay);
-        }
-        Serial.println("Connected");
-    }
+// class WebInterface {
+//   private:
+//     WiFiClient wifiClient;
+//     HTTPClient httpClient;
+//     const long connectionDelay = 200;
+//     long ardJsonMemory = 1000;
+//   public:
+//     void begin(const char* ssid, const char* password) {
+//         WiFi.begin(ssid, password);
+//         while (!this->isConnected()) {
+//             delay(this->connectionDelay);
+//         }
+//         Serial.println("Connected");
+//     }
 
-    bool isConnected() {
-        return WiFi.status() == WL_CONNECTED;
-    }
+//     bool isConnected() {
+//         return WiFi.status() == WL_CONNECTED;
+//     }
 
-    long request(const char* url) {
-      this->httpClient.begin(this->wifiClient, url);
-      return httpClient.GET();
-    }
+//     long request(const char* url) {
+//       this->httpClient.begin(this->wifiClient, url);
+//       return httpClient.GET();
+//     }
 
-    DynamicJsonDocument getJSON() {
-      DynamicJsonDocument doc(this->ardJsonMemory);
-      deserializeJson(doc, this->httpClient.getString());
-      return doc;
-    }
+//     DynamicJsonDocument getJSON() {
+//       DynamicJsonDocument doc(this->ardJsonMemory);
+//       deserializeJson(doc, this->httpClient.getString());
+//       return doc;
+//     }
 
-    void setArdJsonMemory(long mem) {
-      this->ardJsonMemory = mem;
-    }
+//     void setArdJsonMemory(long mem) {
+//       this->ardJsonMemory = mem;
+//     }
 
-    void release() {
-      this->httpClient.end();
-    }
-};
+//     void release() {
+//       this->httpClient.end();
+//     }
+// };
 
 class UserInteract
 {
@@ -89,12 +95,24 @@ class UserInteract
 
   public:
     UserInteract (int xPin, int yPin, int buttonPin){
+      /*
+      Init function for UserInteract class
+
+      Parameters: {
+        xPin: Pin to read horizontal position of analog joystick
+        yPin: Pin to read vertical position of analog joystick
+        buttonPin: Pin to read case of button on the analog joystick
+      } 
+      */
       this->xPin = xPin;
       this->yPin = yPin;
       this->buttonPin = buttonPin;
     }
 
     void begin() {
+      /*
+      Makes some configurations to read the values properly
+      */
       pinMode(this->xPin, INPUT);
       pinMode(this->yPin, INPUT);
       pinMode(this->buttonPin, INPUT_PULLUP);
@@ -102,10 +120,10 @@ class UserInteract
 
     void readValues() {
       xPosition = analogRead(this->xPin);
-      xPosition = map(xPosition, joyMinValue, joyMaxValue, SCREEN_WIDTH - 1, 0);
+      xPosition = map(xPosition, p_joyMinValue, p_joyMaxValue, joyMaxXValue, joyMinXValue);
       
       yPosition = analogRead(this->yPin);
-      yPosition = map(yPosition, joyMinValue, joyMaxValue, SCREEN_HEIGHT - 1, 0);
+      yPosition = map(yPosition, p_joyMinValue, p_joyMaxValue, joyMaxYValue, joyMinYValue);
 
       buttonFlag = abs(digitalRead(this->buttonPin) - 1);
     }
@@ -136,19 +154,78 @@ class UserInteract
     }
 
     bool RIGHT () {
-      return this->getXPosition() == SCREEN_WIDTH - 1;
+      return this->getXPosition() == joyMaxXValue;
     }
     
     bool LEFT () {
-      return this->getXPosition() == 0;
+      return this->getXPosition() == joyMinXValue;
     }
 
     bool UP () {
-      return this->getYPosition() == 0;
+      return this->getYPosition() == joyMinYValue;
     }
 
     bool DOWN () {
-      return this->getYPosition() == SCREEN_HEIGHT - 1;
+      return this->getYPosition() == joyMaxYValue;
+    }
+};
+
+class Frame {
+  private:
+    int w;
+    int h;
+    int x;
+    int y;
+    bool border = false;
+  public:
+    Frame(int w, int h, int x, int y) {
+      /* 
+      Initialization function of Frame
+      
+      Parameters: {
+        w: Width of frame
+        h: Height of frame
+        x: Horizontal start position of frame (It will be automatically centered in x-axis when x value is negative)
+        y: Vertical start position of frame (It will be automatically centered in y-axis when y value is negative)
+      }
+      */
+      this->w = w;
+      this->h = h;
+      if (x < 0) {
+        this->x = x;
+      } else {
+        this->x = (SCREEN_WIDTH - x) / 2;
+      }
+
+      if (y < 0) {
+        this->y = y;
+      } else {
+        this->y = (SCREEN_HEIGHT - y) / 2;
+      }
+    }
+
+    int getW() {
+      return this->w;
+    }
+    
+    int getH() {
+      return this->h;
+    }
+
+    int getX() {
+      return this->x;
+    }
+
+    int getY() {
+      return this->y;
+    }
+
+    bool haveBorder() {
+      return this->border;
+    }
+
+    void toggleBorder() {
+      this->border = !this->border;
     }
 };
 
@@ -158,34 +235,35 @@ class UserInteract
 // ----------------------- INITILIZATIONS ---------------------------------------
 
 UserInteract userInteract(xPin, yPin, buttonPin);
-WebInterface webInterface;
+// WebInterface webInterface;
+Frame MAINFRAME = Frame(SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0);
 
 // ----------------------- END OF INITILIZATIONS --------------------------------
 
 
 void setup() {
   Serial.begin(serialPort);
-  userInteract.begin(ssid, password);
-  webInterface.begin();
+  userInteract.begin();
+  // webInterface.begin(ssid, password);
   display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS);
   display.clearDisplay();
   display.display();
   display.setTextSize(1);
   display.setTextColor(WHITE);
 
-  long httpCode = webInterface.request("http://play-ard.herokuapp.com/questions/");
-  if (webInterface.isConnected()) {
-    if (httpCode > 0) {
-      DynamicJsonDocument jsondoc = webInterface.getJSON();
-      String answers = jsondoc["answers"];
-    }
-  }
-  webInterface.release();
+  // long httpCode = webInterface.request("http://play-ard.herokuapp.com/questions/");
+  // if (webInterface.isConnected()) {
+  //   if (httpCode > 0) {
+  //     DynamicJsonDocument jsondoc = webInterface.getJSON();
+  //     String answers = jsondoc["answers"];
+  //   }
+  // }
+  // webInterface.release();
 }
 
 void loop() {
   userInteract.readValues();
-  userInteract.print(); 
+  userInteract.print();
   createGameUI();
 }
 
@@ -196,7 +274,7 @@ void createGameUI() {
   display.clearDisplay();
   int rectW = 120;
   int rectH = 56;
-  // Draws centered rectangle   
+  // Draws centered rectangle
   drawRectCentered(rectW, rectH, SSD1306_WHITE);
 
   String titleText = "MILLIONAIRE";
@@ -217,7 +295,6 @@ void drawRectCentered(int w, int h, int color) {
     color: Color of rectangle
   }
   */
-
   display.drawRect((display.width() - w) / 2, (display.height() - h) / 2, w, h, color);
 }
 
@@ -232,7 +309,6 @@ void drawRectCentered(int w, int h, int color, bool fill) {
     (optional)fill: Fill the rectangle? (default: false)
   }
   */
-
   if (fill) {
     display.fillRect((display.width() - w) / 2, (display.height() - h) / 2, w, h, color);
   }
@@ -256,7 +332,6 @@ void setCursorHorCenter(String text, long topMargin) {
   uint16_t h;
 
   display.getTextBounds(text, 0, 0, &x1, &y1, &w, &h);
-
   display.setCursor((display.width() - w) / 2, topMargin - 1);
 }
 
@@ -275,7 +350,6 @@ void setCursorVerCenter(String text, long leftMargin) {
   uint16_t h;
 
   display.getTextBounds(text, 0, 0, &x1, &y1, &w, &h);
-
   display.setCursor(leftMargin - 1, (display.height() - h) / 2);
 }
 
@@ -316,6 +390,8 @@ void chooseOption(int n) {
   }
   */
 
+  EVENT_OPTION_CURTIME = millis();
+
   if (userInteract.BUTTON()) {
     String text = "SELECTED: " + String(currentAnswer);
     setCursorHorCenter(text, 50);
@@ -323,13 +399,17 @@ void chooseOption(int n) {
   }
 
   else if (userInteract.RIGHT()) {
-    currentAnswer = (((currentAnswer + 1) % n) + n) % n;
-    delay(shortDelay);
+    if (EVENT_OPTION_CURTIME - EVENT_OPTION_PREVTIME > shortDelay) {
+      currentAnswer = (((currentAnswer + 1) % n) + n) % n;
+      EVENT_OPTION_PREVTIME = millis();
+    }
   }
 
   else if (userInteract.LEFT()) {
-    currentAnswer = (((currentAnswer - 1) % n) + n) % n;
-    delay(shortDelay);
+    if (EVENT_OPTION_CURTIME - EVENT_OPTION_PREVTIME > shortDelay) {
+      currentAnswer = (((currentAnswer - 1) % n) + n) % n;
+      EVENT_OPTION_PREVTIME = millis();
+    }
   }
 
 }
