@@ -1,20 +1,21 @@
 #ifndef POINT_H
 #define POINT_H
+#include <cstdint>
 
 class Point
 {
 private:
-    unsigned short int X=0;
-    unsigned short int Y=0;
+    uint16_t X=0;
+    uint16_t Y=0;
 
 public:
-    unsigned short int getX();
+    uint16_t getX();
 
-    unsigned short int getY();
+    uint16_t getY();
 
-    void setX(unsigned short int X);
+    void setX(uint16_t X);
 
-    void setY(unsigned short int Y);
+    void setY(uint16_t Y);
 };
 
 

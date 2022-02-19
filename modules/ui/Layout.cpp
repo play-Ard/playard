@@ -1,36 +1,36 @@
 #include "Layout.h"
 
-unsigned short int Layout::getW()
+uint16_t Layout::getW()
 {
     return Layout::width;
 }
 
-unsigned short int Layout::getH()
+uint16_t Layout::getH()
 {
     return Layout::height;
 }
 
-short int Layout::getMgTop()
+uint16_t Layout::getMgTop()
 {
     return Layout::mgTop;
 }
 
-short int Layout::getMgLeft()
+uint16_t Layout::getMgLeft()
 {
     return Layout::mgLeft;
 }
 
-short int Layout::getMgBottom()
+uint16_t Layout::getMgBottom()
 {
     return Layout::mgBottom;
 }
 
-short int Layout::getMgRight()
+uint16_t Layout::getMgRight()
 {
     return Layout::mgRight;
 }
 
-void Layout::setW(unsigned short int width)
+void Layout::setW(uint16_t width)
 {
     Layout::width = width;
 }

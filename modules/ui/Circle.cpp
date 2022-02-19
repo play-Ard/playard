@@ -1,31 +1,31 @@
 #include "Circle.h"
 
-unsigned short int Circle::getColor()
+    int16_t Circle::getColor()
     {
         return this->color;
     }
 
-    unsigned short int Circle::getRadius()
+    uint16_t Circle::getRadius()
     {
         return this->radius;
     }
 
-    short int Circle::getMgTop()
+    uint16_t Circle::getMgTop()
     {
         return this->mgTop;
     }
 
-    short int Circle::getMgLeft()
+    uint16_t Circle::getMgLeft()
     {
         return this->mgLeft;
     }
 
-    short int Circle::getMgBottom()
+    uint16_t Circle::getMgBottom()
     {
         return this->mgBottom;
     }
 
-    short int Circle::getMgRight()
+    uint16_t Circle::getMgRight()
     {
         return this->mgRight;
     }
@@ -34,32 +34,32 @@ unsigned short int Circle::getColor()
         return *this->layout;
     }
 
-    void Circle::setColor(unsigned short int color)
+    void Circle::setColor(uint16_t color)
     {
         this->color = color;
     }
 
-    void Circle::setRadius(unsigned short int radius)
+    void Circle::setRadius(uint16_t radius)
     {
         this->radius = radius;
     }
 
-    void Circle::setMgTop(short int mgTop)
+    void Circle::setMgTop(uint16_t mgTop)
     {
         this->mgTop = mgTop;
     }
 
-    void Circle::setMgLeft(short int mgLeft)
+    void Circle::setMgLeft(uint16_t mgLeft)
     {
         this->mgLeft = mgLeft;
     }
 
-    void Circle::setMgBottom(short int mgBottom)
+    void Circle::setMgBottom(uint16_t mgBottom)
     {
         this->mgBottom = mgBottom;
     }
 
-    void Circle::setMgRight(short int mgRight)
+    void Circle::setMgRight(uint16_t mgRight)
     {
         this->mgRight = mgRight;
     }

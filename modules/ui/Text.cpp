@@ -5,32 +5,32 @@ string Text::getValue()
         return this->value;
     }
 
-    unsigned short int Text::getFontSize()
+    int8_t Text::getFontSize()
     {
         return this->fontSize;
     }
 
-    unsigned short int Text::getColor()
+    uint16_t Text::getColor()
     {
         return this->color;
     }
 
-    short int Text::getMgTop()
+    uint16_t Text::getMgTop()
     {
         return this->mgTop;
     }
 
-    short int Text::getMgLeft()
+    uint16_t Text::getMgLeft()
     {
         return this->mgLeft;
     }
 
-    short int Text::getMgBottom()
+    uint16_t Text::getMgBottom()
     {
         return this->mgBottom;
     }
 
-    short int Text::getMgRight()
+    uint16_t Text::getMgRight()
     {
         return this->mgRight;
     }
@@ -44,32 +44,32 @@ string Text::getValue()
         this->value = value;
     }
 
-    void Text::setFontSize(unsigned short int fontSize)
+    void Text::setFontSize(int8_t fontSize)
     {
         this->fontSize = fontSize;
     }
 
-    void Text::setColor(unsigned short int color)
+    void Text::setColor(uint16_t color)
     {
         this->color = color;
     }
 
-    void Text::setMgTop(short int mgTop)
+    void Text::setMgTop(uint16_t mgTop)
     {
         this->mgTop = mgTop;
     }
 
-    void Text::setMgLeft(short int mgLeft)
+    void Text::setMgLeft(uint16_t mgLeft)
     {
         this->mgLeft = mgLeft;
     }
 
-    void Text::setMgBottom(short int mgBottom)
+    void Text::setMgBottom(uint16_t mgBottom)
     {
         this->mgBottom = mgBottom;
     }
 
-    void Text::setMgRight(short int mgRight)
+    void Text::setMgRight(uint16_t mgRight)
     {
         this->mgRight = mgRight;
     }

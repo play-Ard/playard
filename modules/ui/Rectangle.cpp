@@ -6,12 +6,12 @@
         return this->color;
     }
 
-    uint16_t Rectangle::getW()
+    uint16_t Rectangle::getWidth()
     {
         return this->width;
     }
 
-    uint16_t Rectangle::getH()
+    uint16_t Rectangle::getHeight()
     {
         return this->height;
     }

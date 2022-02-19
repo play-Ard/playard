@@ -1,4 +1,6 @@
 #include "Layout.h"
+#include <string>
+#include <cstdint>
 
 #ifndef TEXT_H
 #define TEXT_H
@@ -7,44 +9,44 @@ class Text
 {
 private:
     string value;
-    unsigned short int fontSize=1;
-    unsigned short int color=1;
-    short int mgTop;
-    short int mgLeft;
-    short int mgBottom;
-    short int mgRight;
+    int8_t fontSize=1;
+    uint16_t color=1;
+    uint16_t mgTop;
+    uint16_t mgLeft;
+    uint16_t mgBottom;
+    uint16_t mgRight;
     Layout *layout;
 
 public:
     string getValue();
 
-    unsigned short int getFontSize();
+    int8_t getFontSize();
 
-    unsigned short int getColor();
+    uint16_t getColor();
 
-    short int getMgTop();
+    uint16_t getMgTop();
 
-    short int getMgLeft();
+    uint16_t getMgLeft();
 
-    short int getMgBottom();
+    uint16_t getMgBottom();
 
-    short int getMgRight();
+    uint16_t getMgRight();
 
     Layout getLayout();
 
     void setValue(string value);
 
-    void setFontSize(unsigned short int fontSize);
+    void setFontSize(int8_t fontSize);
 
-    void setColor(unsigned short int color);
+    void setColor(uint16_t color);
 
-    void setMgTop(short int mgTop);
+    void setMgTop(uint16_t mgTop);
 
-    void setMgLeft(short int mgLeft);
+    void setMgLeft(uint16_t mgLeft);
 
-    void setMgBottom(short int mgBottom);
+    void setMgBottom(uint16_t mgBottom);
 
-    void setMgRight(short int mgRight);
+    void setMgRight(uint16_t mgRight);
 
     void setLayout(Layout *layout);
 };

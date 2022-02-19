@@ -1,4 +1,5 @@
 #include "Layout.h"
+#include <cstdint>
 
 #ifndef CIRCLE_H
 #define CIRCLE_H
@@ -6,40 +7,40 @@
 class Circle
 {
 private:
-    unsigned short int color;
-    unsigned short int radius;
-    short int mgTop;
-    short int mgLeft;
-    short int mgBottom;
-    short int mgRight;
+    int16_t color;
+    uint16_t radius;
+    uint16_t mgTop;
+    uint16_t mgLeft;
+    uint16_t mgBottom;
+    uint16_t mgRight;
     Layout *layout;
 
 public:
-    unsigned short int getColor();
+    int16_t getColor();
 
-    unsigned short int getRadius();
+    uint16_t getRadius();
 
-    short int getMgTop();
+    uint16_t getMgTop();
 
-    short int getMgLeft();
+    uint16_t getMgLeft();
 
-    short int getMgBottom();
+    uint16_t getMgBottom();
 
-    short int getMgRight();
+    uint16_t getMgRight();
 
     Layout getLayout();
 
-    void setColor(unsigned short int color);
+    void setColor(int16_t color);
 
-    void setRadius(unsigned short int radius);
+    void setRadius(uint16_t radius);
 
-    void setMgTop(short int mgTop);
+    void setMgTop(uint16_t mgTop);
 
-    void setMgLeft(short int mgLeft);
+    void setMgLeft(uint16_t mgLeft);
 
-    void setMgBottom(short int mgBottom);
+    void setMgBottom(uint16_t mgBottom);
 
-    void setMgRight(short int mgRight);
+    void setMgRight(uint16_t mgRight);
 
     void setLayout(Layout *layout);
 };

@@ -1,8 +1,7 @@
-#include "Layout.h"
 
 #ifndef RECTANGLE_H
 #define RECTANGLE_H
-
+#include "Layout.h"
 #include <stdint.h>
 
 class Rectangle
@@ -21,9 +20,9 @@ private:
 public:
     int16_t getColor();
 
-    uint16_t getW();
+    uint16_t getWidth();
 
-    uint16_t getH();
+    uint16_t getHeight();
 
     uint16_t getMgTop();
 

@@ -1,40 +1,40 @@
 #ifndef LAYOUT_H
 #define LAYOUT_H
+#include <cstdint>
 
 class Layout
 {
 private:
-    unsigned short int width;
-    unsigned short int height;
-    short int mgTop;
-    short int mgLeft;
-    short int mgBottom;
-    short int mgRight;
-
+    uint16_t width;
+    uint16_t height;
+    uint16_t mgTop;
+    uint16_t mgLeft;
+    uint16_t mgBottom;
+    uint16_t mgRight;
 public:
-    unsigned short int getW();
+    uint16_t getW();
 
-    unsigned short int getH();
+    uint16_t getH();
 
-    short int getMgTop();
+    uint16_t getMgTop();
 
-    short int getMgLeft();
+    uint16_t getMgLeft();
 
-    short int getMgBottom();
+    uint16_t getMgBottom();
 
-    short int getMgRight();
+    uint16_t getMgRight();
 
-    void setW(unsigned short int width);
+    void setW(uint16_t width);
 
-    void setH(unsigned short int height);
+    void setH(uint16_t height);
 
-    void setMgTop(short int mgTop);
+    void setMgTop(uint16_t mgTop);
 
-    void setMgLeft(short int mgLeft);
+    void setMgLeft(uint16_t mgLeft);
 
-    void setMgBottom(short int mgBottom);
+    void setMgBottom(uint16_t mgBottom);
 
-    void setMgRight(short int mgRight);
+    void setMgRight(uint16_t mgRight);
 };
 
 #endif
