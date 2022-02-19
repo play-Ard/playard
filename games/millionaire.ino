@@ -35,6 +35,7 @@ int currentAnswer = 0;
 String questions;
 String answers; 
 
+
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 #define SCREEN_ADDRESS 0x3C
 
@@ -185,23 +186,27 @@ class Frame {
       Parameters: {
         w: Width of frame
         h: Height of frame
-        x: Horizontal start position of frame (It will be automatically centered in x-axis when x value is negative)
-        y: Vertical start position of frame (It will be automatically centered in y-axis when y value is negative)
+        x: Horizontal start position of frame (It will be automatically centered on x-axis when x value is negative)
+        y: Vertical start position of frame (It will be automatically centered on y-axis when y value is negative)
       }
       */
       this->w = w;
       this->h = h;
-      if (x < 0) {
+      if (x >= 0) {
         this->x = x;
       } else {
-        this->x = (SCREEN_WIDTH - x) / 2;
+        x = (SCREEN_WIDTH - w) / 2;
+        this->x = x;
       }
 
-      if (y < 0) {
+      if (y >= 0) {
         this->y = y;
       } else {
-        this->y = (SCREEN_HEIGHT - y) / 2;
+        y = (SCREEN_HEIGHT - h) / 2;
+        this->y = y;
       }
+
+      this->drawCorners();
     }
 
     int getW() {
@@ -226,6 +231,13 @@ class Frame {
 
     void toggleBorder() {
       this->border = !this->border;
+    }
+
+    void drawCorners() {
+      display.drawPixel(this->x, this->y, SSD1306_WHITE);
+      display.drawPixel(this->x + this->w, this->y, SSD1306_WHITE);
+      display.drawPixel(this->x, this->y + this->h, SSD1306_WHITE);
+      display.drawPixel(this->x + this->w, this->y + this->h, SSD1306_WHITE);
     }
 };
 
@@ -263,7 +275,7 @@ void setup() {
 
 void loop() {
   userInteract.readValues();
-  userInteract.print();
+  // userInteract.print();
   createGameUI();
 }
 
@@ -272,33 +284,42 @@ void createGameUI() {
   Creates and displays some basic UI elements for game
   */
   display.clearDisplay();
-  int rectW = 120;
-  int rectH = 56;
-  // Draws centered rectangle
-  drawRectCentered(rectW, rectH, SSD1306_WHITE);
+  
+  Frame titleFrame = Frame(72, 8, -1, 4);
+  Frame questionFrame = Frame(108, 16, -1, 16);
+  Frame answerFrame = Frame(96, 16, -1, 40);
 
   String titleText = "MILLIONAIRE";
-  setCursorHorCenter(titleText, 10);
-  display.println(titleText);
-  displayOptions();
+  drawTextCenter(titleText, titleFrame);
+  String questionText = "QUESTION 1";
+  drawTextCenter(questionText, questionFrame);
+  String answerText = "ANSWER 1";
+  drawTextCenter(answerText, answerFrame);
+  
+  
+  
+  //displayOptions();
 
   display.display();
 }
 
-void drawRectCentered(int w, int h, int color) {
-/*
-  Draws a unfilled rectangle in the center of the screen according to given parameters
+void drawRectCentered(int w, int h, int color, Frame frame) {
+  /*
+  Draws a unfilled rectangle in the center of given frame
   
   Parameters: {
     w: Width of rectangle
     h: Height of rectangle
     color: Color of rectangle
+    Frame: Frame that contains the rectangle
   }
   */
-  display.drawRect((display.width() - w) / 2, (display.height() - h) / 2, w, h, color);
+  int cursorX = (frame.getW() - w) / 2 + frame.getX();
+  int cursorY = (frame.getH() - h) / 2 + frame.getY();
+  display.drawRect(cursorX, cursorY, w, h, color);
 }
 
-void drawRectCentered(int w, int h, int color, bool fill) {
+void drawRectCentered(int w, int h, int color, Frame frame, bool fill) {
   /*
   Draws a rectangle in the center of the screen according to given parameters
   
@@ -309,21 +330,24 @@ void drawRectCentered(int w, int h, int color, bool fill) {
     (optional)fill: Fill the rectangle? (default: false)
   }
   */
+  int cursorX = (frame.getW() - w) / 2 + frame.getX();
+  int cursorY = (frame.getH() - h) / 2 + frame.getY();
+  
   if (fill) {
-    display.fillRect((display.width() - w) / 2, (display.height() - h) / 2, w, h, color);
+    display.fillRect(cursorX, cursorY, w, h, color);
   }
   else {
-    display.drawRect((display.width() - w) / 2, (display.height() - h) / 2, w, h, color);
+    display.drawRect(cursorX, cursorY, w, h, color);
   }
 }
 
-void setCursorHorCenter(String text, long topMargin) {
+void drawTextCenter(String text, Frame frame) {
   /*
   Sets the cursor to print a text aligned horizontal center
   
   Parameters: {
     text: text to be written
-    topMargin: distance between text and top side of screen
+    frame: frame that contains the text
   }
   */
   int16_t x1;
@@ -332,87 +356,72 @@ void setCursorHorCenter(String text, long topMargin) {
   uint16_t h;
 
   display.getTextBounds(text, 0, 0, &x1, &y1, &w, &h);
-  display.setCursor((display.width() - w) / 2, topMargin - 1);
+  int cursorX = (frame.getW() - w) / 2 + frame.getX();
+  int cursorY = (frame.getH() - h) / 2 + frame.getY();
+  display.setCursor(cursorX, cursorY);
+  display.print(text);
 }
 
-void setCursorVerCenter(String text, long leftMargin) {
-  /*
-  Sets the cursor to print a text aligned vertical center
+// void displayOptions() {
+//   /* 
+//   Displays some options horizontally centered
+//   */
+//   int n = 4;
+//   char options[n] = { 'A', 'B', 'C', 'D'};
+//   String seperator = "  ";
+
+//   String sOptions = convertToString(options, n, seperator);
+//   chooseOption(n);
+//   setCursorHorCenter(sOptions, 30);
+
+//   for (size_t i = 0; i < n; i++)
+//   {
+//     if (i == currentAnswer) {
+//       display.setTextColor(BLACK, WHITE);
+//     }
+//     else {
+//       display.setTextColor(WHITE, BLACK);
+//     }
+//     display.print(options[i]);
+
+//     display.setTextColor(WHITE, BLACK);
+//     display.print(seperator);
+//   }
+// }
+
+
+// void chooseOption(int n) {
+//   /*
+//   Chooses a option according to analog joystick position
   
-  Parameters: {
-    text: text to be written
-    leftMargin: distance between text and left side of screen
-  }
-  */
-  int16_t x1;
-  int16_t y1;
-  uint16_t w;
-  uint16_t h;
+//   Parameters: {
+//     n: Number of options
+//   }
+//   */
 
-  display.getTextBounds(text, 0, 0, &x1, &y1, &w, &h);
-  display.setCursor(leftMargin - 1, (display.height() - h) / 2);
-}
+//   EVENT_OPTION_CURTIME = millis();
 
-void displayOptions() {
-  /* 
-  Displays some options horizontally centered
-  */
-  int n = 4;
-  char options[n] = { 'A', 'B', 'C', 'D'};
-  String seperator = "  ";
+//   if (userInteract.BUTTON()) {
+//     String text = "SELECTED: " + String(currentAnswer);
+//     setCursorHorCenter(text, 50);
+//     display.print(text);
+//   }
 
-  String sOptions = convertToString(options, n, seperator);
-  chooseOption(n);
-  setCursorHorCenter(sOptions, 30);
+//   else if (userInteract.RIGHT()) {
+//     if (EVENT_OPTION_CURTIME - EVENT_OPTION_PREVTIME > shortDelay) {
+//       currentAnswer = (((currentAnswer + 1) % n) + n) % n;
+//       EVENT_OPTION_PREVTIME = millis();
+//     }
+//   }
 
-  for (size_t i = 0; i < n; i++)
-  {
-    if (i == currentAnswer) {
-      display.setTextColor(BLACK, WHITE);
-    }
-    else {
-      display.setTextColor(WHITE, BLACK);
-    }
-    display.print(options[i]);
+//   else if (userInteract.LEFT()) {
+//     if (EVENT_OPTION_CURTIME - EVENT_OPTION_PREVTIME > shortDelay) {
+//       currentAnswer = (((currentAnswer - 1) % n) + n) % n;
+//       EVENT_OPTION_PREVTIME = millis();
+//     }
+//   }
 
-    display.setTextColor(WHITE, BLACK);
-    display.print(seperator);
-  }
-}
-
-
-void chooseOption(int n) {
-  /*
-  Chooses a option according to analog joystick position
-  
-  Parameters: {
-    n: Number of options
-  }
-  */
-
-  EVENT_OPTION_CURTIME = millis();
-
-  if (userInteract.BUTTON()) {
-    String text = "SELECTED: " + String(currentAnswer);
-    setCursorHorCenter(text, 50);
-    display.print(text);
-  }
-
-  else if (userInteract.RIGHT()) {
-    if (EVENT_OPTION_CURTIME - EVENT_OPTION_PREVTIME > shortDelay) {
-      currentAnswer = (((currentAnswer + 1) % n) + n) % n;
-      EVENT_OPTION_PREVTIME = millis();
-    }
-  }
-
-  else if (userInteract.LEFT()) {
-    if (EVENT_OPTION_CURTIME - EVENT_OPTION_PREVTIME > shortDelay) {
-      currentAnswer = (((currentAnswer - 1) % n) + n) % n;
-      EVENT_OPTION_PREVTIME = millis();
-    }
-  }
-
-}
+// }
 
 String convertToString(char* a, int size, String sep)
 {
