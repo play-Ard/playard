@@ -2,80 +2,80 @@
 
 std::string Text::getValue()
 {
-    return this->value;
+    return Text::value;
 }
 
 int8_t Text::getFontSize()
 {
-    return this->fontSize;
+    return Text::fontSize;
 }
 
 uint16_t Text::getColor()
 {
-    return this->color;
+    return Text::color;
 }
 
 uint16_t Text::getMgTop()
 {
-    return this->mgTop;
+    return Text::mgTop;
 }
 
 uint16_t Text::getMgLeft()
 {
-    return this->mgLeft;
+    return Text::mgLeft;
 }
 
 uint16_t Text::getMgBottom()
 {
-    return this->mgBottom;
+    return Text::mgBottom;
 }
 
 uint16_t Text::getMgRight()
 {
-    return this->mgRight;
+    return Text::mgRight;
 }
 
 Layout Text::getLayout()
 {
-    return *this->layout;
+    return *Text::layout;
 }
 
 void Text::setValue(std::string value)
 {
-    this->value = value;
+    Text::value = value;
 }
 
 void Text::setFontSize(int8_t fontSize)
 {
-    this->fontSize = fontSize;
+    Text::fontSize = fontSize;
 }
 
 void Text::setColor(uint16_t color)
 {
-    this->color = color;
+    Text::color = color;
 }
 
 void Text::setMgTop(uint16_t mgTop)
 {
-    this->mgTop = mgTop;
+    Text::mgTop = mgTop;
 }
 
 void Text::setMgLeft(uint16_t mgLeft)
 {
-    this->mgLeft = mgLeft;
+    Text::mgLeft = mgLeft;
 }
 
 void Text::setMgBottom(uint16_t mgBottom)
 {
-    this->mgBottom = mgBottom;
+    Text::mgBottom = mgBottom;
 }
 
 void Text::setMgRight(uint16_t mgRight)
 {
-    this->mgRight = mgRight;
+    Text::mgRight = mgRight;
 }
 
 void Text::setLayout(Layout *layout)
 {
-    this->layout = layout;
+    Text::layout = layout;
 }

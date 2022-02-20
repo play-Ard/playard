@@ -1,5 +1,10 @@
 #include "Point.h"
 
+Point::Point(uint16_t X, uint16_t Y) {
+    Point::X = X;
+    Point::Y = Y;
+}
+
 uint16_t Point::getX() {
     return Point::X;
 }

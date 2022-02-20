@@ -14,7 +14,7 @@ private:
     uint16_t mgLeft;
     uint16_t mgBottom;
     uint16_t mgRight;
-    Layout *layout;
+    Layout* layout;
 
 public:
     int16_t getColor();

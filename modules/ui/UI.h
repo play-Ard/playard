@@ -6,5 +6,6 @@
 #include "components/Rectangle.h"
 #include "components/Text.h"
 #include "components/Circle.h"
+#include "components/Triangle.h"
 
 #endif

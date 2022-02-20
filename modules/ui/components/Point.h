@@ -10,6 +10,8 @@ private:
     uint16_t Y=0;
 
 public:
+    Point(uint16_t X, uint16_t Y);
+
     uint16_t getX();
 
     uint16_t getY();
