@@ -1,14 +1,15 @@
+#ifndef TEXT_H
+#define TEXT_H
+
 #include "Layout.h"
 #include <string>
 #include <cstdint>
 
-#ifndef TEXT_H
-#define TEXT_H
 
 class Text
 {
 private:
-    string value;
+    std::string value;
     int8_t fontSize=1;
     uint16_t color=1;
     uint16_t mgTop;
@@ -18,7 +19,7 @@ private:
     Layout *layout;
 
 public:
-    string getValue();
+    std::string getValue();
 
     int8_t getFontSize();
 
@@ -34,7 +35,7 @@ public:
 
     Layout getLayout();
 
-    void setValue(string value);
+    void setValue(std::string value);
 
     void setFontSize(int8_t fontSize);
 
