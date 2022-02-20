@@ -31,7 +31,7 @@ public:
 
     Layout getLayout();
 
-    void setColor(int16_t color);
+    void setColor(uint16_t color);
 
     void setRadius(uint16_t radius);
 

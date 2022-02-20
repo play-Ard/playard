@@ -1,10 +1,10 @@
 #ifndef UI_H
 #define UI_H
 
-#include "Point.h"
-#include "Layout.h"
-#include "Rectangle.h"
-#include "Text.h"
-#include "Circle.h"
+#include "components/Point.h"
+#include "components/Layout.h"
+#include "components/Rectangle.h"
+#include "components/Text.h"
+#include "components/Circle.h"
 
 #endif
