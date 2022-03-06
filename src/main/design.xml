@@ -1,0 +1,19 @@
+<Main>
+    <Layout id='mainLayout' width='128' height='64' x-position='64' y-position='32'>
+        <Layout id='menuLayout' width='112' height='56' x-position='64' y-position='32'>
+            <Layout id='menuElement1' width='112' height='14' x-position='56' y-position='11'>
+                <Rectangle id='rect1' width='112' height='14' x-position='56' y-position='7' color='1' border-radius='4' />
+            </Layout>
+            <Layout id='menuElement2' width='112' height='14' x-position='56' y-position='25'>
+                <Rectangle id='rect2' width='112' height='14' x-position='56' y-position='7' color='1' border-radius='4' />
+            </Layout>
+            <Layout id='menuElement3' width='112' height='14' x-position='56' y-position='39'>
+                <Rectangle id='rect3' width='112' height='14' x-position='56' y-position='7' color='1' border-radius='4' />
+            </Layout>
+            <Layout id='menuElement4' width='112' height='14' x-position='56' y-position='53'>
+                <Rectangle id='rect4' width='112' height='14' x-position='56' y-position='7' color='1' border-radius='4' />
+            </Layout>
+            <Circle id='cursor' x-position='100' y-position='7' radius='4' fill='1' />
+        </Layout>
+    </Layout>
+</Main>
