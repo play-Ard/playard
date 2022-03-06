@@ -7,16 +7,19 @@ void GFXEngine::loadXML(const char *XMLStr) // will be edited
     //     while (0)
     //         ;
 
+    // Load XML document
     if (!doc.load_string(XMLStr))
         while (1)
             ;
 
+    // Clear component vectors, create new components and generate new component vectors
     GFXEngine::clearComponents();
     GFXEngine::createComponents(GFXEngine::getRoot());
 }
 
 void GFXEngine::clearComponents()
 {
+    // Clear all component vectors
     GFXEngine::layoutComps.clear();
     GFXEngine::rectComps.clear();
     GFXEngine::circleComps.clear();
@@ -28,6 +31,7 @@ void GFXEngine::createComponents(xml_node node)
 {
     for (const auto &child : node)
     {
+        // If the name of child node is Layout
         if (!strcmp(child.name(), "Layout"))
         {
             Layout *layout = new Layout();
@@ -42,9 +46,11 @@ void GFXEngine::createComponents(xml_node node)
 
             GFXEngine::layoutComps.push_back(layout);
 
+            // If name of given child node is Layout then dive into
             GFXEngine::createComponents(child);
         }
 
+        // If the name of child node is Rectangle
         else if (!strcmp(child.name(), "Rectangle"))
         {
             Rectangle *rectangle = new Rectangle();
@@ -63,6 +69,7 @@ void GFXEngine::createComponents(xml_node node)
             GFXEngine::rectComps.push_back(rectangle);
         }
 
+        // If the name of child node is Circle
         else if (!strcmp(child.name(), "Circle"))
         {
             Circle *circle = new Circle();
@@ -79,6 +86,7 @@ void GFXEngine::createComponents(xml_node node)
             GFXEngine::circleComps.push_back(circle);
         }
 
+        // If the name of child node is Text
         else if (!strcmp(child.name(), "Text"))
         {
             Text *text = new Text();
@@ -102,13 +110,14 @@ void GFXEngine::createComponents(xml_node node)
 uint8_t GFXEngine::getMgTop(std::string parentID)
 {
     Layout *parentLayout = GFXEngine::getLayoutByID(parentID.c_str());
-    uint8_t m_mgTop = parentLayout->getMgTop();
+    uint8_t m_mgTop = parentLayout->getMgTop(); // Get the top margin of parent layout
 
+    // If ID of parent layout is { XML_MAIN_LAYOUT_ID } break recursion
     if (!strcmp(parentID.c_str(), GFXEngine::XML_MAIN_LAYOUT_ID))
     {
         return m_mgTop;
     }
-
+    // Else add top margin of related layout to total sum
     else
     {
         return m_mgTop + GFXEngine::getMgTop(parentLayout->getParentID());
@@ -118,12 +127,14 @@ uint8_t GFXEngine::getMgTop(std::string parentID)
 uint8_t GFXEngine::getMgLeft(std::string parentID)
 {
     Layout *parentLayout = GFXEngine::getLayoutByID(parentID.c_str());
-    uint8_t m_mgLeft = parentLayout->getMgLeft();
+    uint8_t m_mgLeft = parentLayout->getMgLeft(); // Get the left margin of parent layout
 
+    // If ID of parent layout is { XML_MAIN_LAYOUT_ID } break recursion
     if (!strcmp(parentID.c_str(), GFXEngine::XML_MAIN_LAYOUT_ID))
     {
         return m_mgLeft;
     }
+    // Else add left margin of related layout to total sum
     else
     {
         return m_mgLeft + GFXEngine::getMgLeft(parentLayout->getParentID());
@@ -133,13 +144,15 @@ uint8_t GFXEngine::getMgLeft(std::string parentID)
 bool GFXEngine::getVisibility(std::string parentID)
 {
     Layout *parentLayout = GFXEngine::getLayoutByID(parentID.c_str());
-    bool visibility = parentLayout->getVisibility();
+    bool visibility = parentLayout->getVisibility(); // Get the state of visibility of parent layout
 
+    // If ID of parent layout is { XML_MAIN_LAYOUT_ID } break recursion
     if (!strcmp(parentID.c_str(), GFXEngine::XML_MAIN_LAYOUT_ID))
     {
         return visibility;
     }
 
+    // Else, return boolean 'and' result of old result and the new one
     else
     {
         return visibility && GFXEngine::getVisibility(parentLayout->getParentID());
@@ -148,7 +161,7 @@ bool GFXEngine::getVisibility(std::string parentID)
 
 xml_node GFXEngine::getRoot()
 {
-    return GFXEngine::doc.child(GFXEngine::XML_ROOT_NAME);
+    return GFXEngine::doc.child(GFXEngine::XML_ROOT_NAME); // Return root element
 }
 
 Layout *GFXEngine::getLayoutByID(std::string id)
@@ -235,7 +248,7 @@ Text *GFXEngine::getTextByID(std::string id)
         ;
 }
 
-void GFXEngine::adjustText(Text *text)
+void GFXEngine::adjustText(Text *text) // Totally experimental, can be replaced with new functions
 {
     int16_t x1, y1;
     uint16_t w, h;
@@ -252,6 +265,7 @@ void GFXEngine::renderPoints()
 {
     for (Point *&point : GFXEngine::pointComps)
     {
+        // If state of visibility of related point component then render
         if (point->getVisibility())
         {
             uint16_t X = GFXEngine::getMgTop(point->getParentID()) + point->getY();
@@ -270,6 +284,7 @@ void GFXEngine::renderTexts()
 {
     for (Text *&text : GFXEngine::textComps)
     {
+        // If state of visibility of related text component then render
         bool visibility = text->getVisibility() && GFXEngine::getVisibility(text->getParentID());
         if (visibility)
         {
@@ -290,6 +305,7 @@ void GFXEngine::renderRectangles()
     for (Rectangle *&rectangle : GFXEngine::rectComps)
     {
         bool visibility = rectangle->getVisibility() && GFXEngine::getVisibility(rectangle->getParentID());
+        // If state of visibility of related rectangle component then render
         if (visibility)
         {
             uint16_t mgTop = GFXEngine::getMgTop(rectangle->getParentID()) + rectangle->getMgTop();
@@ -315,6 +331,7 @@ void GFXEngine::renderTriangles()
     for (Triangle *&triangle : GFXEngine::triangleComps)
     {
         bool visibility = triangle->getVisibility() && GFXEngine::getVisibility(triangle->getParentID());
+        // If state of visibility of related triangle component then render
         if (visibility)
         {
             uint8_t y1 = GFXEngine::getMgTop(triangle->getParentID()) + triangle->getPoint1().getY();
@@ -324,7 +341,14 @@ void GFXEngine::renderTriangles()
             uint8_t x2 = GFXEngine::getMgLeft(triangle->getParentID()) + triangle->getPoint2().getX();
             uint8_t x3 = GFXEngine::getMgLeft(triangle->getParentID()) + triangle->getPoint3().getX();
             uint8_t color = triangle->getColor();
-            GFXEngine::display.drawTriangle(x1, y1, x2, y2, x3, y3, color);
+            if (triangle->getFill())
+            {
+                GFXEngine::display.fillTriangle(x1, y1, x2, y2, x3, y3, color);
+            }
+            else
+            {
+                GFXEngine::display.drawTriangle(x1, y1, x2, y2, x3, y3, color);
+            }
         }
     }
 }
@@ -333,6 +357,7 @@ void GFXEngine::renderCircles()
 {
     for (Circle *&circle : GFXEngine::circleComps)
     {
+        // If state of visibility of related circle component then render
         bool visibility = circle->getVisibility() && GFXEngine::getVisibility(circle->getParentID());
         if (visibility)
         {
@@ -364,10 +389,10 @@ void GFXEngine::renderComponents()
 
 void GFXEngine::begin(uint16_t screen_width, uint16_t screen_height, uint8_t reset_pin, int SCREEN_ADDRESS)
 {
-    GFXEngine::loadXML(GFXEngine::xmlStr.c_str());
-    GFXEngine::display = Adafruit_SSD1306(screen_width, screen_height, &Wire, reset_pin);
-    GFXEngine::display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS);
-    GFXEngine::display.clearDisplay();
+    GFXEngine::loadXML(GFXEngine::xmlStr.c_str());                                        // Load initial XML document
+    GFXEngine::display = Adafruit_SSD1306(screen_width, screen_height, &Wire, reset_pin); // Initialize display screen
+    GFXEngine::display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS);                       // Start the display screen
+    GFXEngine::display.clearDisplay();                                                    // Clear the display
 }
 
 void GFXEngine::update()
