@@ -99,10 +99,10 @@ void GFXEngine::createComponents(xml_node node)
     }
 }
 
-long GFXEngine::getMgTop(std::string parentID)
+uint8_t GFXEngine::getMgTop(std::string parentID)
 {
     Layout *parentLayout = GFXEngine::getLayoutByID(parentID.c_str());
-    uint16_t m_mgTop = parentLayout->getMgTop();
+    uint8_t m_mgTop = parentLayout->getMgTop();
 
     if (!strcmp(parentID.c_str(), GFXEngine::XML_MAIN_LAYOUT_ID))
     {
@@ -115,10 +115,10 @@ long GFXEngine::getMgTop(std::string parentID)
     }
 }
 
-long GFXEngine::getMgLeft(std::string parentID)
+uint8_t GFXEngine::getMgLeft(std::string parentID)
 {
     Layout *parentLayout = GFXEngine::getLayoutByID(parentID.c_str());
-    uint16_t m_mgLeft = parentLayout->getMgLeft();
+    uint8_t m_mgLeft = parentLayout->getMgLeft();
 
     if (!strcmp(parentID.c_str(), GFXEngine::XML_MAIN_LAYOUT_ID))
     {
