@@ -46,7 +46,7 @@ void GFXEngine::createComponents(xml_node node)
 
             GFXEngine::layoutComps.push_back(layout);
 
-            // If name of given child node is Layout then dive into
+            // If name of given child node is Layout then call createComponents with child node to dive into
             GFXEngine::createComponents(child);
         }
 
@@ -284,7 +284,7 @@ void GFXEngine::renderTexts()
 {
     for (Text *&text : GFXEngine::textComps)
     {
-        // If state of visibility of related text component then render
+        // If related text is not hidden then render
         bool visibility = text->getVisibility() && GFXEngine::getVisibility(text->getParentID());
         if (visibility)
         {
@@ -305,7 +305,7 @@ void GFXEngine::renderRectangles()
     for (Rectangle *&rectangle : GFXEngine::rectComps)
     {
         bool visibility = rectangle->getVisibility() && GFXEngine::getVisibility(rectangle->getParentID());
-        // If state of visibility of related rectangle component then render
+        // If related rectangle is not hidden then render
         if (visibility)
         {
             uint16_t mgTop = GFXEngine::getMgTop(rectangle->getParentID()) + rectangle->getMgTop();
@@ -331,7 +331,7 @@ void GFXEngine::renderTriangles()
     for (Triangle *&triangle : GFXEngine::triangleComps)
     {
         bool visibility = triangle->getVisibility() && GFXEngine::getVisibility(triangle->getParentID());
-        // If state of visibility of related triangle component then render
+        // If related triangle is not hidden then render
         if (visibility)
         {
             uint8_t y1 = GFXEngine::getMgTop(triangle->getParentID()) + triangle->getPoint1().getY();
@@ -357,7 +357,7 @@ void GFXEngine::renderCircles()
 {
     for (Circle *&circle : GFXEngine::circleComps)
     {
-        // If state of visibility of related circle component then render
+        // If related circle is not hidden then render
         bool visibility = circle->getVisibility() && GFXEngine::getVisibility(circle->getParentID());
         if (visibility)
         {
