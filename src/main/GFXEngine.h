@@ -298,6 +298,81 @@ public:
             Text* myTextComponent = getTextByID("myText");
     */
 
+    void clonePointComponent(Point *point, std::string ID);
+    /*
+        Summary:
+            Clones given point component with given ID
+
+        Params:
+        {
+            point: Point component to clone
+            ID: ID of new component
+        }
+
+        Example Usage:
+            clonePointComponent(pointComponentToClone);
+    */
+
+    void cloneRectComponent(Rectangle *rectangle, std::string ID);
+    /*
+        Summary:
+            Clones given rectangle component with given ID
+
+        Params:
+        {
+            rectangle: Rectangle component to clone
+            ID: ID of new component
+        }
+
+        Example Usage:
+            cloneRectComponent(rectComponentToClone);
+    */
+
+    void cloneTriangleComponent(Triangle *triangle, std::string ID);
+    /*
+        Summary:
+            Clones given triangle component with given ID
+
+        Params:
+        {
+            triangle: Triangle component to clone
+            ID: ID of new component
+        }
+
+        Example Usage:
+            cloneTriangleComponent(triangleComponentToClone);
+    */
+
+    void cloneCircleComponent(Circle *circle, std::string ID);
+    /*
+        Summary:
+            Clones given circle component with given ID
+
+        Params:
+        {
+            circle: Circle component to clone
+            ID: ID of new component
+        }
+
+        Example Usage:
+            cloneCircleComponent(circleComponentToClone);
+    */
+
+    void cloneTextComponent(Text *text, std::string ID);
+    /*
+        Summary:
+            Clones given text component with given ID
+
+        Params:
+        {
+            text: Text component to clone
+            ID: ID of new component
+        }
+
+        Example Usage:
+            cloneTextComponent(textComponentToClone);
+    */
+
     // void setXMLPath(std::string path);
 
     void begin(uint16_t screen_width, uint16_t screen_height, uint8_t reset_pin, int address);

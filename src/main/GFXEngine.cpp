@@ -50,6 +50,7 @@ void GFXEngine::createComponents(xml_node node)
             GFXEngine::createComponents(child);
         }
 
+
         // If the name of child node is Rectangle
         else if (!strcmp(child.name(), "Rectangle"))
         {
@@ -246,6 +247,71 @@ Text *GFXEngine::getTextByID(std::string id)
 
     while (1)
         ;
+}
+
+void GFXEngine::clonePointComponent(Point* point, ID) {
+    Point* newPoint = new Point();
+    newPoint->setID(ID);
+    newPoint->setX(point->getX());
+    newPoint->setY(point->getY());
+    newPoint->setVisibility(point->getVisibility());
+    newPoint->setColor(point.getColor());
+    newPoint->setParentID(point->getParentID());
+    GFXEngine::pointComps.push_back(newPoint);
+}
+
+void GFXEngine::cloneRectComponent(Rectangle* rectangle, std::string ID) {
+    Rectangle* newRect = new Rectangle();
+    newRect->setID(ID);
+    newRect->setBorderRadius(rectangle->getBorderRadius());
+    newRect->setColor(rectangle->getColor());
+    newRect->setFill(rectangle->getFill());
+    newRect->setH(rectangle->getH());
+    newRect->setVisibility(rectangle->getVisibility());
+    newRect->setW(rectangle->getW());
+    newRect->setX(rectangle->getX());
+    newRect->setY(rectangle->getY());
+    newRect->setParentID(rectangle->getParentID());
+    GFXEngine::rectComps.push_back(newRect);
+}
+
+void GFXEngine::cloneCircleComponent(Circle* circle, std::string ID) {
+    Circle* newCircle = new Circle();
+    newCircle->setID(ID);
+    newCircle->setX(circle->getX());
+    newCircle->setY(circle->getY());
+    newCircle->setFill(circle->getFill());
+    newCircle->setVisibility(circle->getVisibility());
+    newCircle->setRadius(circle->getRadius());
+    newCircle->setParentID(circle->getParentID());
+    GFXEngine::circleComps.push_back(newCircle);
+}
+
+void GFXEngine::cloneTriangleComponent(Triangle* triangle, std::string ID) {
+    Triangle* newTriangle = new Triangle();
+    newTriangle->setID(ID);
+    newTriangle->setPoints(triangle->getPoint1(), triangle->getPoint2(), triangle->getPoint3());
+    newTriangle->setColor(triangle->getColor());
+    newTriangle->setFill(triangle->getFill());
+    newTriangle->setVisibility(triangle->getVisibility());
+    newTriangle->setParentID(triangle->getParentID());
+    GFXEngine::triangleComps.push_back(newTriangle);
+}
+
+void GFXEngine::cloneTextComponent(Text* text, std::string ID) {
+    Text* newText = new Text();
+    newText->setID(ID);
+    newText->setX(text->getX());
+    newText->setY(text->getY());
+    newText->setFontSize(text->getFontSize());
+    newText->setColor(text->getColor());
+    newText->setBgColor(text->getBgColor());
+    newText->setValue(text->getValue());
+    newText->setVisibility(text->getVisibility());
+    newText->setHAlignment(text->getHAlignment());
+    newText->setVAlignment(text->getVAlignment());
+    newText->setParentID(text->getParentID());
+    GFXEngine::textComps.push_back(newText);
 }
 
 void GFXEngine::adjustText(Text *text) // Totally experimental, can be replaced with new functions
