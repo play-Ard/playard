@@ -241,7 +241,7 @@ public:
     /*
         Summary:
             Constructor for class Point
-        
+
         Params: {
             X: Horizontal position of point component
             Y: Vertical position of point component
@@ -269,7 +269,6 @@ public:
             int myPointColor = myPoint->getColor();
     */
 
-
     uint16_t getX();
     /*
         Summary:
@@ -287,7 +286,6 @@ public:
         Example Usage:
             int myPointY = myPoint->getY();
     */
-   
 
     bool getVisibility();
     /*
@@ -479,7 +477,7 @@ public:
             Returns state of visibility of a rectangle component
 
         Example Usage:
-            int myRectVisibility = myRect->getVisibility();
+            bool myRectVisibility = myRect->getVisibility();
     */
 
     bool getFill();
@@ -672,38 +670,202 @@ private:
 
 public:
     std::string getID();
+    /*
+        Summary:
+            Returns ID of a triangle component
+
+        Example Usage:
+            std::string ID = myTriangle->getID();
+    */
 
     uint8_t getColor();
+    /*
+        Summary:
+            Returns color of a triangle component
+
+        Example Usage:
+            int color = myTriangle->getColor();
+    */
 
     Point getPoint1();
+    /*
+        Summary:
+            Returns first point of a triangle component
+
+        Example Usage:
+            Point myTrianglePoint1 = myTriangle->getPoint1();
+    */
 
     Point getPoint2();
+    /*
+        Summary:
+            Returns second point of a triangle component
+
+        Example Usage:
+            Point myTrianglePoint2 = myTriangle->getPoint2();
+    */
 
     Point getPoint3();
+    /*
+        Summary:
+            Returns third point of a triangle component
+
+        Example Usage:
+            Point myTrianglePoint3 = myTriangle->getPoint3();
+    */
 
     bool getVisibility();
+    /*
+        Summary:
+            Returns state of visibility of a triangle component
+
+        Example Usage:
+            bool myTriangleVisibilty = myTriangle->getVisibilty();
+    */
 
     bool getFill();
+    /*
+        Summary:
+            Returns state of fill of a triangle component
+
+        Example Usage:
+            bool myTriangleFill = myTriangle->getFill();
+    */
 
     std::string getParentID();
+    /*
+        Summary:
+            Returns ID of parent layout of fill of a triangle component
+
+        Example Usage:
+            bool myTriangleParentID = myTriangle->getParentID();
+    */
 
     void setID(std::string ID);
+    /*
+        Summary:
+            Replaces the ID of a triangle with the given value
+
+        Params: {
+            ID: Value to set
+        }
+
+        Example Usage:
+        myTriangle->setID("newID");
+    */
 
     void setColor(uint8_t color);
+    /*
+        Summary:
+            Replaces the color of a triangle with the given value
+
+        Params: {
+            color: Value to set
+        }
+
+        Example Usage:
+        int WHITE = 1;
+        myTriangle->setColor(WHITE);
+    */
 
     void setPoint1(Point *point);
+    /*
+        Summary:
+            Replaces the first point of a triangle with the given point component
+
+        Params: {
+            point: Point component to set
+        }
+
+        Example Usage:
+        Point* newPoint = new Point(3, 4);
+        myTriangle->setPoint1(newPoint);
+    */
 
     void setPoint2(Point *point);
+    /*
+        Summary:
+            Replaces the second point of a triangle with the given point component
+
+        Params: {
+            point: Point component to set
+        }
+
+        Example Usage:
+        Point* newPoint = new Point(5, 2);
+        myTriangle->setPoint2(newPoint);
+    */
 
     void setPoint3(Point *point);
+    /*
+        Summary:
+            Replaces the third point of a triangle with the given point component
+
+        Params: {
+            point: Point component to set
+        }
+
+        Example Usage:
+        Point* newPoint = new Point(20, 10);
+        myTriangle->setPoint3(newPoint);
+    */
 
     void setPoints(Point *point1, Point *point2, Point *point3);
+    /*
+        Summary:
+            Replaces all points of a triangle with the given point components
+
+        Params: {
+            point1: First point component to set
+            point2: Second point component to set
+            point3: Third point component to set
+        }
+
+        Example Usage:
+        Point* newPoint1 = new Point(20, 10);
+        Point* newPoint2 = new Point(20, 10);
+        Point* newPoint3 = new Point(20, 10);
+        myTriangle->setPoints(newPoint1, newPoint2, newPoint3);
+    */
 
     void setVisibility(bool visibility);
+    /*
+        Summary:
+            Replaces the state of visibility of a triangle with the given value
+
+        Params: {
+            visiblity: Value to set
+        }
+
+        Example Usage:
+        myTriangle->setVisibility(0); // Hides the triangle
+    */
 
     void setFill(bool fill);
+    /*
+        Summary:
+            Replaces the state of fill of a triangle with the given value
+
+        Params: {
+            fill: Value to set
+        }
+
+        Example Usage:
+        myTriangle->setFill(1);
+    */
 
     void setParentID(std::string ID);
+    /*
+        Summary:
+            Replaces the ID of parent layout of a triangle with the given value
+
+        Params: {
+            ID: Value to set
+        }
+
+        Example Usage:
+        myTriangle->setParentID("otherLayout");
+    */
 };
 
 // ---------------------------------------------------------------------------------
