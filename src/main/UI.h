@@ -411,47 +411,243 @@ private:
 
 public:
     std::string getID();
+    /*
+        Summary:
+            Returns ID of a rectangle component
+
+        Example Usage:
+            std::string ID = myLayout->getID();
+    */
 
     int16_t getColor();
+    /*
+        Summary:
+            Returns color of a rectangle component
+
+        Example Usage:
+            int myRectColor = myRect->getColor();
+    */
 
     uint16_t getW();
+    /*
+        Summary:
+            Returns width of a rectangle component
+
+        Example Usage:
+            int myRectWidth = myRect->getW();
+    */
 
     uint16_t getH();
+    /*
+        Summary:
+            Returns height of a rectangle component
+
+        Example Usage:
+            int myRectHeight = myRect->getH();
+    */
 
     uint16_t getY();
+    /*
+        Summary:
+            Returns vertical position of a rectangle component
+
+        Example Usage:
+            int myRectY = myRect->getY();
+    */
 
     uint16_t getX();
+    /*
+        Summary:
+            Returns horizontal position of a rectangle component
+
+        Example Usage:
+            int myRectX = myRect->getX();
+    */
 
     uint16_t getBorderRadius();
+    /*
+        Summary:
+            Returns border radius of a rectangle component
+
+        Example Usage:
+            int myRectBorderRadius = myRect->getBorderRadius();
+    */
 
     bool getVisibility();
+    /*
+        Summary:
+            Returns state of visibility of a rectangle component
+
+        Example Usage:
+            int myRectVisibility = myRect->getVisibility();
+    */
 
     bool getFill();
+    /*
+        Summary:
+            Returns state of fill of a rectangle component
+
+        Example Usage:
+            int myRectFill = myRect->getFill();
+    */
 
     std::string getParentID();
+    /*
+        Summary:
+            Returns ID of parent layout of a rectangle component
+
+        Example Usage:
+            std::string myRectParentID = myRect->getParentID();
+    */
 
     void setID(std::string ID);
+    /*
+        Summary:
+            Replaces the ID of a rectangle with the given value
+
+        Params: {
+            ID: Value to set
+        }
+
+        Example Usage:
+            myRect->setID("newID");
+    */
 
     void setColor(uint8_t color);
+    /*
+        Summary:
+            Replaces the color of a rectangle with the given value
+
+        Params: {
+            color: Value to set
+        }
+
+        Example Usage:
+        int WHITE = 1;
+        myRect->setColor(WHITE);
+    */
 
     void setW(uint16_t width);
+    /*
+        Summary:
+            Replaces the width of a rectangle with the given value
+
+        Params: {
+            width: Value to set
+        }
+
+        Example Usage:
+        myRect->setW(myRect->getW() - 10);
+    */
 
     void setH(uint16_t height);
+    /*
+        Summary:
+            Replaces the height of a rectangle with the given value
+
+        Params: {
+            height: Value to set
+        }
+
+        Example Usage:
+        myRect->setH(myRect->getH() + 24);
+    */
 
     void setY(uint16_t yPosition);
+    /*
+        Summary:
+            Replaces the vertical position of a rectangle with the given value
+
+        Params: {
+            yPosition: Value to set
+        }
+
+        Example Usage:
+        myRect->setY(myRect->getY() - 10); // Shifts related rectangle down by 10 pixels
+    */
 
     void setX(uint16_t xPosition);
+    /*
+        Summary:
+            Replaces the horizontal position of a rectangle with the given value
+
+        Params: {
+            xPosition: Value to set
+        }
+
+        Example Usage:
+        myRect->setX(myRect->getX() + 22); // Shifts rectangle right by 22 pixels
+    */
 
     void setBorderRadius(uint16_t radius);
+    /*
+        Summary:
+            Replaces the border radius of a rectangle with the given value
+
+        Params: {
+            radius: Value to set
+        }
+
+        Example Usage:
+        myRect->setBorderRadius(5);
+    */
 
     void setVisibility(bool visibility);
+    /*
+        Summary:
+            Replaces the state of visibility of a rectangle with the given value
+
+        Params: {
+            visibility: Value to set
+        }
+
+        Example Usage:
+        myRect->setVisibility(0); // Hides the rectangle
+    */
 
     void setFill(bool fill);
+    /*
+        Summary:
+            Replaces the state of fill of a rectangle with the given value
+
+        Params: {
+            fill: Value to set
+        }
+
+        Example Usage:
+        myRect->setFill(1); // Fills the rectangle
+    */
 
     void setParentID(std::string ID);
+    /*
+        Summary:
+            Replaces the ID of parent layout of a rectangle with the given value
+
+        Params: {
+            ID: Value to set
+        }
+
+        Example Usage:
+        myRect->setParentID("otherLayout");
+    */
 
     uint16_t getMgTop();
+    /*
+        Summary:
+            Returns top margin of a rectangle component
+
+        Example Usage:
+            int myRectMgTop = myRect->getMgTop();
+    */
+
     uint16_t getMgLeft();
+    /*
+        Summary:
+            Returns left margin of a rectangle component
+
+        Example Usage:
+            int myRectMgLeft = myRect->getMgLeft();
+    */
 };
 
 // ---------------------------------------------------------------------------------
