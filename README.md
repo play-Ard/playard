@@ -1,18 +1,20 @@
-
-
 ![Banner](images/playard-banner.png)
 
 # What is Playard?
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id ante iaculis, pretium lectus in, maximus lectus. In eros erat, tincidunt et varius sit amet, tristique et dui. Suspendisse ullamcorper nisi ex, vestibulum ullamcorper velit faucibus vel. Fusce mauris augue, suscipit pellentesque lorem viverra, posuere consectetur nulla. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Maecenas vitae varius quam. Morbi maximus enim et sem molestie, id malesuada dolor tempus. Vestibulum a aliquet nibh, non molestie ante. In hac habitasse platea dictumst. Nam bibendum ante sit amet diam scelerisque, nec euismod eros consectetur. Nunc facilisis id ante a blandit. Nunc libero lacus, varius in fringilla non, varius a arcu. Nulla quis diam congue, vestibulum odio non, malesuada diam.
+It is an open-source educational project that aims to impose today's technologies on people in a fun way and they can be involved in the development of the project.
 
 ![Playard Example Screen](images/i2c-hello-world.png)
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis.
+# What Have We Done So Far ?
+We wanted to develop the idea of ​​a retro game console made abroad using a microcontroller. We started working on it. We set our microcontroller as **ESP32**. We worked on the coding. We also stored and shared the codes we wrote on GitHub. With new research and brainstorming, we reached a solution for every problem that came our way. We wanted to develop our project in line with the events we participated in and the information we gained, and we brought up our idea of ​​IoT (Internet of Things). Our game console can connect to the wireless internet and we get the data used in the game over the internet, eliminating the memory problem. Another innovation that we do not have in other projects is that we have created a design window on our website where we can easily design a game. All our users will be able to design the images of their own games using this system.
+
+# What are our tools and goals ?
+The concept of our product is for first-hand testing of software technologies and applications. Our vehicles; are the electronic, software parts and systems we use. At the same time, each of our users who use our project becomes a supporter for the development of the project. It is our goal to convey the algorithm logic and game design fundamentals to our users and to improve their programming skills.
 
 # Why Use Playard Game Engine?
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis.
+Playard Game Engine is created based on idea for seperating graphic design and programming processes for provide a more abstract programming experience. With its built-in XML based graphic engine it is more easier to work on graphics. Thus, it reduces development and test durations and increases the productivity.
 
 ![How Parser Works](images/playard-xml-parser-logic.png)
 
