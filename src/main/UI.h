@@ -687,7 +687,7 @@ public:
             int color = myTriangle->getColor();
     */
 
-    Point getPoint1();
+    Point* getPoint1();
     /*
         Summary:
             Returns first point of a triangle component
@@ -696,7 +696,7 @@ public:
             Point myTrianglePoint1 = myTriangle->getPoint1();
     */
 
-    Point getPoint2();
+    Point* getPoint2();
     /*
         Summary:
             Returns second point of a triangle component
@@ -705,7 +705,7 @@ public:
             Point myTrianglePoint2 = myTriangle->getPoint2();
     */
 
-    Point getPoint3();
+    Point* getPoint3();
     /*
         Summary:
             Returns third point of a triangle component

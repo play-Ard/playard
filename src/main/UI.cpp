@@ -294,19 +294,19 @@ uint8_t Triangle::getColor()
     return Triangle::color;
 }
 
-Point Triangle::getPoint1()
+Point* Triangle::getPoint1()
 {
-    return *Triangle::point1;
+    return Triangle::point1;
 }
 
-Point Triangle::getPoint2()
+Point* Triangle::getPoint2()
 {
-    return *Triangle::point2;
+    return Triangle::point2;
 }
 
-Point Triangle::getPoint3()
+Point* Triangle::getPoint3()
 {
-    return *Triangle::point3;
+    return Triangle::point3;
 }
 
 bool Triangle::getVisibility()
