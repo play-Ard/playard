@@ -12,6 +12,7 @@
 #include "UI.h"
 #include <string.h>
 #include <list>
+#include <vector>
 
 using namespace pugi;
 
@@ -28,7 +29,6 @@ private:
 
     /* -------------- END OF MAGIC STRINGS -------------------- */
 
-    Adafruit_SSD1306 display; /* Instance of screen */
 
     std::string xmlStr = "<Main><Layout id='mainLayout' width='128' height='64' x-position='64' y-position='32'>"              // experimental
                          "<Layout id='textLayout' width='96' height='16' x-position='64' y-position='12'>"                     // delete
@@ -181,6 +181,8 @@ private:
     */
 
 public:
+    Adafruit_SSD1306 display; /* Instance of screen */
+
     void loadXML(const char *XMLStr);
     /*
         Summary:

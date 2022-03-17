@@ -249,13 +249,11 @@ Text *GFXEngine::getTextByID(std::string id)
         ;
 }
 
-void GFXEngine::clonePointComponent(Point* point, ID) {
-    Point* newPoint = new Point();
+void GFXEngine::clonePointComponent(Point* point, std::string ID) {
+    Point* newPoint = new Point(newPoint->getX(), newPoint->getY());
     newPoint->setID(ID);
-    newPoint->setX(point->getX());
-    newPoint->setY(point->getY());
     newPoint->setVisibility(point->getVisibility());
-    newPoint->setColor(point.getColor());
+    newPoint->setColor(point->getColor());
     newPoint->setParentID(point->getParentID());
     GFXEngine::pointComps.push_back(newPoint);
 }
@@ -400,12 +398,12 @@ void GFXEngine::renderTriangles()
         // If related triangle is not hidden then render
         if (visibility)
         {
-            uint8_t y1 = GFXEngine::getMgTop(triangle->getParentID()) + triangle->getPoint1().getY();
-            uint8_t y2 = GFXEngine::getMgTop(triangle->getParentID()) + triangle->getPoint2().getY();
-            uint8_t y3 = GFXEngine::getMgTop(triangle->getParentID()) + triangle->getPoint3().getY();
-            uint8_t x1 = GFXEngine::getMgLeft(triangle->getParentID()) + triangle->getPoint1().getX();
-            uint8_t x2 = GFXEngine::getMgLeft(triangle->getParentID()) + triangle->getPoint2().getX();
-            uint8_t x3 = GFXEngine::getMgLeft(triangle->getParentID()) + triangle->getPoint3().getX();
+            uint8_t y1 = GFXEngine::getMgTop(triangle->getParentID()) + triangle->getPoint1()->getY();
+            uint8_t y2 = GFXEngine::getMgTop(triangle->getParentID()) + triangle->getPoint2()->getY();
+            uint8_t y3 = GFXEngine::getMgTop(triangle->getParentID()) + triangle->getPoint3()->getY();
+            uint8_t x1 = GFXEngine::getMgLeft(triangle->getParentID()) + triangle->getPoint1()->getX();
+            uint8_t x2 = GFXEngine::getMgLeft(triangle->getParentID()) + triangle->getPoint2()->getX();
+            uint8_t x3 = GFXEngine::getMgLeft(triangle->getParentID()) + triangle->getPoint3()->getX();
             uint8_t color = triangle->getColor();
             if (triangle->getFill())
             {
@@ -463,7 +461,7 @@ void GFXEngine::begin(uint16_t screen_width, uint16_t screen_height, uint8_t res
 
 void GFXEngine::update()
 {
-    GFXEngine::display.clearDisplay();
     GFXEngine::renderComponents();
     display.display();
+    GFXEngine::display.clearDisplay();
 }
