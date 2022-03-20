@@ -52,7 +52,7 @@ void GFXEngine::createComponents(xml_node node)
 
         else if (!strcmp(child.name(), "Point"))
         {
-            Point *point = new Point(child.attribute("x").as_int(), child.attribute("y"));
+            Point *point = new Point(child.attribute("x").as_int(), child.attribute("y").as_int());
 
             point->setID(child.attribute("id").value());
             point->setColor(child.attribute("color").as_uint(COLOR_DEFAULT));
@@ -102,9 +102,9 @@ void GFXEngine::createComponents(xml_node node)
         {
             Triangle *triangle = new Triangle();
 
-            Point *point1 = new Point(child.attribute("x1").as_int(), child.attribute("y1"));
-            Point *point2 = new Point(child.attribute("x2").as_int(), child.attribute("y2"));
-            Point *point3 = new Point(child.attribute("x3").as_int(), child.attribute("y3"));
+            Point *point1 = new Point(child.attribute("x1").as_int(), child.attribute("y1").as_int());
+            Point *point2 = new Point(child.attribute("x2").as_int(), child.attribute("y2").as_int());
+            Point *point3 = new Point(child.attribute("x3").as_int(), child.attribute("y3").as_int());
 
             triangle->setID(child.attribute("id").value());
             triangle->setColor(child.attribute("color").as_uint(COLOR_DEFAULT));
