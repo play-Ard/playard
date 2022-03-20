@@ -25,7 +25,7 @@ const char *menuXML = "<Main><Layout id='mainLayout' width='128' height='64' x-p
 
 const char *keyboardXML = "<Main><Layout id='mainLayout' width='128' height='64' x-position='64' y-position='32'>"
                           "<Layout id='ssidLayout' width='96' height='16' x-position='64' y-position='12'>"
-                          "<Text id='ssidText' x-position='48' y-position='8' value='Zyxel' h-align='0'/>"
+                          "<Text id='ssidText' x-position='48' y-position='8' value='Zyxel' h-align='0' visibility='0'/>"
                           "</Layout>"
                           "<Layout id='textLayout' width='96' height='16' x-position='64' y-position='32'>"
                           "<Rectangle id='textBorder' width='96' height='16' x-position='48' y-position='8'/>"
@@ -85,13 +85,13 @@ long BUTTON_D_PAST_TIME = 0;
 long BUTTON_3_PAST_TIME = 0;
 int timeInterval = 200;
 
-#define BUTTON_L 15
-#define BUTTON_U 12
-#define BUTTON_R 13
-#define BUTTON_D 32
-#define BUTTON_1 33
-#define BUTTON_2 27
-#define BUTTON_3 35
+#define BUTTON_L 27
+#define BUTTON_U 0
+#define BUTTON_R 4
+#define BUTTON_D 33
+#define BUTTON_1 15
+#define BUTTON_2 2
+#define BUTTON_3 32
 #define PRESSED 0
 #define NOTPRESSED 1
 

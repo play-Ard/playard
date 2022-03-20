@@ -16,7 +16,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 // Maybe can be converted into HashMaps to categorize topics
 const int nRows = 4;
 const int nColumns = 2;
-const char *Questions[ rows ][ columns ] = { 
+const char *Questions[ nRows ][ nColumns ] = { 
   {'Where is the capital of Turkey?', 'How many legs do chickens have?'},
   {'Father of Python?', 'Which is the moon of jupyter?'},
   {'Which one is the default seperator for CSV files?', 'R or Python? :D'},
