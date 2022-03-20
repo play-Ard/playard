@@ -3,6 +3,8 @@
 
 #include <Adafruit_SSD1306.h>
 #include <Adafruit_GFX.h>
+#include "Arduino.h"
+#include <sstream>
 #include <cstdint>
 #include <string>
 
@@ -977,6 +979,8 @@ public:
     void setID(std::string ID);
 
     void setValue(std::string value);
+
+    void setValue(int value);
 
     void setFontSize(int8_t fontSize);
 

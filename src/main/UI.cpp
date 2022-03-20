@@ -294,17 +294,17 @@ uint8_t Triangle::getColor()
     return Triangle::color;
 }
 
-Point* Triangle::getPoint1()
+Point *Triangle::getPoint1()
 {
     return Triangle::point1;
 }
 
-Point* Triangle::getPoint2()
+Point *Triangle::getPoint2()
 {
     return Triangle::point2;
 }
 
-Point* Triangle::getPoint3()
+Point *Triangle::getPoint3()
 {
     return Triangle::point3;
 }
@@ -540,6 +540,13 @@ void Text::setID(std::string ID)
 void Text::setValue(std::string value)
 {
     Text::value = value;
+}
+
+void Text::setValue(int value)
+{
+    std::stringstream temp;
+    temp << value;
+    Text::value = temp.str();
 }
 
 void Text::setFontSize(int8_t fontSize)
