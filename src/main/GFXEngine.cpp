@@ -50,6 +50,17 @@ void GFXEngine::createComponents(xml_node node)
             GFXEngine::createComponents(child);
         }
 
+        else if (!strcmp(child.name(), "Point"))
+        {
+            Point *point = new Point(child.attribute("x").as_int(), child.attribute("y"));
+
+            point->setID(child.attribute("id").value());
+            point->setColor(child.attribute("color").as_uint(COLOR_DEFAULT));
+            point->setVisibility(child.attribute("visibility").as_bool(VISIBILITY_DEFAULT));
+            point->setParentID(node.attribute("id").value());
+        
+            GFXEngine::pointComps.push_back(point);
+        }
 
         // If the name of child node is Rectangle
         else if (!strcmp(child.name(), "Rectangle"))
@@ -85,6 +96,23 @@ void GFXEngine::createComponents(xml_node node)
             circle->setParentID(node.attribute("id").value());
 
             GFXEngine::circleComps.push_back(circle);
+        }
+
+        else if (!strcmp(child.name(), "Triangle"))
+        {
+            Triangle *triangle = new Triangle();
+
+            Point *point1 = new Point(child.attribute("x1").as_int(), child.attribute("y1"));
+            Point *point2 = new Point(child.attribute("x2").as_int(), child.attribute("y2"));
+            Point *point3 = new Point(child.attribute("x3").as_int(), child.attribute("y3"));
+
+            triangle->setID(child.attribute("id").value());
+            triangle->setColor(child.attribute("color").as_uint(COLOR_DEFAULT));
+            triangle->setFill(child.attribute("fill").as_bool(FILL_DEFAULT));
+            triangle->setPoints(point1, point2, point3);
+            triangle->setParentID(node.attribute("id").value());
+
+            GFXEngine::triangleComps.push_back(triangle);
         }
 
         // If the name of child node is Text
@@ -249,8 +277,9 @@ Text *GFXEngine::getTextByID(std::string id)
         ;
 }
 
-void GFXEngine::clonePointComponent(Point* point, std::string ID) {
-    Point* newPoint = new Point(newPoint->getX(), newPoint->getY());
+void GFXEngine::clonePointComponent(Point *point, std::string ID)
+{
+    Point *newPoint = new Point(newPoint->getX(), newPoint->getY());
     newPoint->setID(ID);
     newPoint->setVisibility(point->getVisibility());
     newPoint->setColor(point->getColor());
@@ -258,8 +287,9 @@ void GFXEngine::clonePointComponent(Point* point, std::string ID) {
     GFXEngine::pointComps.push_back(newPoint);
 }
 
-void GFXEngine::cloneRectComponent(Rectangle* rectangle, std::string ID) {
-    Rectangle* newRect = new Rectangle();
+void GFXEngine::cloneRectComponent(Rectangle *rectangle, std::string ID)
+{
+    Rectangle *newRect = new Rectangle();
     newRect->setID(ID);
     newRect->setBorderRadius(rectangle->getBorderRadius());
     newRect->setColor(rectangle->getColor());
@@ -273,8 +303,9 @@ void GFXEngine::cloneRectComponent(Rectangle* rectangle, std::string ID) {
     GFXEngine::rectComps.push_back(newRect);
 }
 
-void GFXEngine::cloneCircleComponent(Circle* circle, std::string ID) {
-    Circle* newCircle = new Circle();
+void GFXEngine::cloneCircleComponent(Circle *circle, std::string ID)
+{
+    Circle *newCircle = new Circle();
     newCircle->setID(ID);
     newCircle->setX(circle->getX());
     newCircle->setY(circle->getY());
@@ -285,8 +316,9 @@ void GFXEngine::cloneCircleComponent(Circle* circle, std::string ID) {
     GFXEngine::circleComps.push_back(newCircle);
 }
 
-void GFXEngine::cloneTriangleComponent(Triangle* triangle, std::string ID) {
-    Triangle* newTriangle = new Triangle();
+void GFXEngine::cloneTriangleComponent(Triangle *triangle, std::string ID)
+{
+    Triangle *newTriangle = new Triangle();
     newTriangle->setID(ID);
     newTriangle->setPoints(triangle->getPoint1(), triangle->getPoint2(), triangle->getPoint3());
     newTriangle->setColor(triangle->getColor());
@@ -296,8 +328,9 @@ void GFXEngine::cloneTriangleComponent(Triangle* triangle, std::string ID) {
     GFXEngine::triangleComps.push_back(newTriangle);
 }
 
-void GFXEngine::cloneTextComponent(Text* text, std::string ID) {
-    Text* newText = new Text();
+void GFXEngine::cloneTextComponent(Text *text, std::string ID)
+{
+    Text *newText = new Text();
     newText->setID(ID);
     newText->setX(text->getX());
     newText->setY(text->getY());
