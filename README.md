@@ -325,8 +325,8 @@ input.BUTTON_L();
 
 ### Built-in Keyboard Module
 
-<img src="images/screenshot-placeholder.png" height="240">
-w
+<img src="images/keyboard.jpg" height="240">
+
 # Used Libraries
 
 - Graphic library : https://github.com/adafruit/Adafruit-GFX-Library
