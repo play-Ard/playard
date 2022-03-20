@@ -26,7 +26,8 @@ The Playard Game Engine is a game engine based on the speed of the C++ language 
 
 Components is one of the innovative solutions of the Playard Game Engine. On PGE, everything is produced and arranged in the form of components.Different components created for figures, texts and images are arranged in the background and displayed on the screen. Components thus provide a cleaner working environment for the programmer.
 
-To use the components in our program we must load a XML string in PGE.
+To access the components in our program we must load related XML string with function loadXML.  
+
 ```cpp
 ```
 
@@ -47,7 +48,8 @@ We can create a layout component in XML. It must has an ID.
 </Main>
 ```
 
-We must convert our XML document to C++ string. And now we can access it in our program with defined id.
+ And now we can access our ball by call our getPointByID function with defined ID.
+
 ```cpp
 const char* main_xml =
 "<Main>"
@@ -77,7 +79,6 @@ Points are components that are represents the pixels on the screen.
 
 To create a point all we need to do create a point tag and define an ID for it, in our mainLayout.
 
-**Example Usage**
 ```xml
 <Main>
   <Layout
@@ -87,8 +88,9 @@ To create a point all we need to do create a point tag and define an ID for it, 
     <Point id = 'point1' x-position='24' y-position='24'/>
   </Layout>
 </Main>
-  ```
+```
 
+We can access our ball by call our getPointByID function with defined ID.
 
 ```cpp
 const char* main_xml =
@@ -131,97 +133,200 @@ To display a rectangle on the screen, we need to create a rectangle tag in a lay
 </Main>
 ```
 
-**Example Usage**
+We can access our ball by call our getRectangleByID function with defined ID.
 
 ```cpp
-code example
+const char* main_xml =
+"<Main>"
+"  <Layout"
+"    id = 'mainLayout'"
+"    x-position = '128'"
+"    y-position = '64'>"
+"    <Rectangle id = 'rect' x-position='64' y-position='32' width='42' height='24' border-radius='4'/>"
+"  </Layout>"
+"</Main>"
+;
+
+gfxEngine.loadXML(main_xml);
+Rectangle* rectangle = gfxEngine.getRectangleByID("rect");
+```
+
+Let's move our rectangle left by 10 pixels.
+
+```cpp
+rectangle->setX(rectangle->getX() + 10);
 ```
 
 ### Circles
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id ante iaculis, pretium lectus in, maximus lectus. In eros erat, tincidunt et varius sit amet, tristique et dui.
+We can draw circles on the screen with Circle components. A circle component has some attributes named "fill", "visibility", "radius" etc.
 
-**Example Usage**
+We need to create a Circle tag in a layout first.
+
+```xml
+<Main>
+  <Layout
+    id = 'mainLayout'
+    x-position = '128'
+    y-position = '64'>
+    <Rectangle id = 'rect' x-position='64' y-position='32' width='42' height='24' border-radius='4'/>
+    <Circle id='ball' x-position='112' y-position='48' radius='2' fill='1'/>
+  </Layout>
+</Main>
+```
+
+We can access our ball by call our getCircleByID function with defined ID.
 
 ```cpp
-code example
+const char* game_xml =
+"<Main>"
+"  <Layout"
+"    id = 'mainLayout'"
+"    x-position = '128'"
+"    y-position = '64'>"
+"    <Rectangle id = 'rect' x-position='64' y-position='32' width='42' height='24' border-radius='4'/>"
+"    <Circle id='ball' x-position='112' y-position='48' radius='2' fill='1'/>"
+"  </Layout>"
+"</Main>"
+;
+
+gfxEngine.loadXML(game_xml);
+Circle* ball = getCircleByID("ball");
+```
+
+Let's enlarge our ball 1 pixel. We can increase radius of ball.
+
+```cpp
+ball->setRadius(ball->getRadius() + 1);
 ```
 
 ### Triangles
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id ante iaculis, pretium lectus in, maximus lectus. In eros erat, tincidunt et varius sit amet, tristique et dui.
+We may want to create some arrow signs or hats in our game. At this point, triangle components come to our aid.
 
-**Example Usage**
+To draw a triangle on the screen, all we need to do is write a Triangle tag in our XML string.
+
+```xml
+<Main>
+  <Layout
+    id = 'mainLayout'
+    x-position = '128'
+    y-position = '64'>
+    <Rectangle id = 'rect' x-position='64' y-position='32' width='42' height='24' border-radius='4'/>
+    <Circle id='ball' x-position='112' y-position='48' radius='2' fill='1'/>
+    <Triangle id='arrow' x1='12' y1='24' x2='12' y2='36' x3='24' y3='36'/>
+  </Layout>
+</Main>
+```
+
+We can access our arrow by call our getTriangleByID function with defined ID.
 
 ```cpp
-code example
+const char* arrow_game_xml =
+"<Main>"
+"  <Layout"
+"    id = 'mainLayout'"
+"    x-position = '128'"
+"    y-position = '64'>"
+"    <Rectangle id = 'rect' x-position='64' y-position='32' width='42' height='24' border-radius='4'/>"
+"    <Circle id='ball' x-position='112' y-position='48' radius='2' fill='1'/>"
+"    <Triangle id='arrow1' x1='12' y1='24' x2='12' y2='36' x3='24' y3='36'/>"
+"  </Layout>"
+"</Main>"
+;
+
+gfxEngine.loadXML(arrow_game_xml);
+Triangle* arrow = gfxEngine.getTriangleByID("arrow");
+```
+
+If we want to hide when the arrow hits an enemy all we need to set its visibility to 0.
+
+```cpp
+if (hit) {
+  arrow->setVisibility(0);
+}
 ```
 
 ### Texts
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id ante iaculis, pretium lectus in, maximus lectus. In eros erat, tincidunt et varius sit amet, tristique et dui.
+We learned draw so many shapes on our screen. But we don't always want to draw a shape. Also we may need to show score or name on the screen. At this point text components are very useful.
 
-**Example Usage**
+We can create a new text by write a Text tag in our XML in the same way.
 
-```cpp
-code example
+```xml
+<Main>
+  <Layout
+    id = 'mainLayout'
+    x-position = '128'
+    y-position = '64'>
+    <Text id='score' x-position='8' y-position='8' value='0'/>
+  </Layout>
+</Main>
 ```
 
-## How Alignment Works
+```cpp
+const char* score_xml =
+"<Main>"
+"  <Layout"
+"    id = 'mainLayout'"
+"    x-position = '128'"
+"    y-position = '64'>"
+"    <Text id='scoreText' x-position='8' y-position='8' value='0'/>"
+"  </Layout>"
+"</Main>"
+;
 
-Amet, tristique et dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id ante iaculis, pretium lectus in, maximus lectus. In eros erat, tincidunt et varius sit amet, tristique et dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id ante iaculis, pretium lectus in, maximus lectus. In eros erat, tincidunt et varius sit amet, tristique et dui.
+gfxEngine.loadXML(score_xml);
+Text* scoreText = gfxEngine.getTextByID("scoreText")
+```
+
+Let's increase our score by 1.
+
+```cpp
+score = 0;
+scoreText->setValue(score);
+
+score++; // Increase score by 1
+scoreText->setValue(score);
+```
+
+## How Alignment Works In PGE
+
+In PGE all components have a horizontal and vertical positions that called "x-position", "y-position". This positions refers to center of related component.
+
+
 
 ![](images/how-alignment-works.png)
 
 ## How to Interact with Player
+After all boring animations now we can get input from player. PGE has built-in input module. We must get instance from Input class and call its begin functions to apply configurations.
+
+```cpp
+Input input;
+
+void setup () {
+  input.begin();
+}
+```
 
 ### Buttons
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id ante iaculis, pretium lectus in, maximus lectus. In eros erat, tincidunt et varius sit amet, tristique et dui.
-
-<img src="images/screenshot-placeholder.png" height="240">
+An input object have many functions for each button that returns 1 when pressed.
 
 ```cpp
-code example
-```
-
-### Gyroscope
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id ante iaculis, pretium lectus in, maximus lectus. In eros erat, tincidunt et varius sit amet, tristique et dui.
-
-<img src="images/screenshot-placeholder.png" height="240">
-
-```cpp
-code example
+input.BUTTON_1();
+input.BUTTON_2();
+input.BUTTON_3();
+input.BUTTON_U();
+input.BUTTON_R();
+input.BUTTON_D();
+input.BUTTON_L();
 ```
 
 ### Built-in Keyboard Module
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id ante iaculis, pretium lectus in, maximus lectus. In eros erat, tincidunt et varius sit amet, tristique et dui.
-
 <img src="images/screenshot-placeholder.png" height="240">
-
-```cpp
-
-```
-
-# Game Gallery
-
-<div >
-<img style="margin: 4px" src="images/screenshot-placeholder.png" width="220" alt="1">
-<img style="margin: 4px" src="images/screenshot-placeholder.png" width="220" alt="1">
-<img style="margin: 4px" src="images/screenshot-placeholder.png" width="220" alt="1">
-<img style="margin: 4px" src="images/screenshot-placeholder.png" width="220" alt="1">
-<img style="margin: 4px" src="images/screenshot-placeholder.png" width="220" alt="1">
-<img style="margin: 4px" src="images/screenshot-placeholder.png" width="220" alt="1">
-<img style="margin: 4px" src="images/screenshot-placeholder.png" width="220" alt="1">
-<img style="margin: 4px" src="images/screenshot-placeholder.png" width="220" alt="1">
-<img style="margin: 4px" src="images/screenshot-placeholder.png" width="220" alt="1">
-<img style="margin: 4px" src="images/screenshot-placeholder.png" width="220" alt="1">
-<img style="margin: 4px" src="images/screenshot-placeholder.png" width="220" alt="1">
-<img style="margin: 4px" src="images/screenshot-placeholder.png" width="220" alt="1">
-</div>
-
+w
 # Used Libraries
 
 - Graphic library : https://github.com/adafruit/Adafruit-GFX-Library
@@ -233,14 +338,3 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id ante iacul
 - Display Library : https://www.arduino.cc/reference/en/libraries/adafruit-ssd1306/
 
 - Pugi-XML : https://pugixml.org/
-
-# Special Thanks
-
-- Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-- Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-- Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-
-**© 2021-2022 Playard Inc.**
