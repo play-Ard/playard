@@ -6,6 +6,9 @@ Input input;
 
 #define M_PI 3.14159265358979323846 /* pi */
 
+#define SCREEN_WIDTH 127
+#define SCREEN_HEIGHT 63
+
 long BUTTON_1_PAST_TIME = 0;
 long BUTTON_2_PAST_TIME = 0;
 long BUTTON_U_PAST_TIME = 0;
@@ -15,35 +18,34 @@ long BUTTON_D_PAST_TIME = 0;
 long BUTTON_3_PAST_TIME = 0;
 long MOVE_CURSOR_PAST_TIME = 0;
 long MOVE_BALL_PAST_TIME = 0;
+long COLLISION_PAST_TIME = 0;
 
 long moveCursorInterval = 2;
 long moveBallInterval = 2;
+long collisionInterval = 100;
 
-const char* game_xml = 
-"<Main>"
-"  <Layout id='mainLayout' x-position='64' y-position='32' width='128' height='64'>"
-""
-"    <Circle id='ball' x-position='12' y-position='56' radius='3' />"
-""
-"    <Layout id='barPanel' x-position='48' y-position='6' width='64' height='4' visibility='0'>"
-""
-"      <Rectangle id='bar' x-position='32' y-position='2' width='64' height='2' />"
-""
-"      <Circle id='cursor' x-position='16' y-position='2' radius='2' />"
-""
-"    </Layout>"
-""
-"    <Layout id='targetLayout' x-position='126' y-position='32' width='4' height='64'>"
-""
-"      <Rectangle id='wall' x-position='2' y-position='32' width='4' height='128' fill='1'/>"
-""
-"      <Rectangle id='target' x-position='2' y-position='24' width='4' height='20' color='0' fill='1'/>"
-""
-"    </Layout>"
-""
-"  </Layout>"
-"</Main>"
-;
+const char *game_xml =
+    "<Main>"
+    "  <Layout id='mainLayout' x-position='64' y-position='32' width='128' height='64'>"
+    ""
+    "    <Text id='scoreText' x-position='6' y-position='6' value='0'/>"
+    ""
+    "    <Circle id='ball' x-position='12' y-position='56' radius='3' />"
+    ""
+    "    <Layout id='barPanel' x-position='48' y-position='6' width='64' height='4' visibility='0'>"
+    ""
+    "      <Rectangle id='bar' x-position='32' y-position='2' width='64' height='2' />"
+    ""
+    "      <Circle id='cursor' x-position='16' y-position='2' radius='2' />"
+    ""
+    "    </Layout>"
+    ""
+    "    <Rectangle id='wall' x-position='126' y-position='32' width='4' height='64' fill='1'/>"
+    "      "
+    "    <Rectangle id='target' x-position='126' y-position='24' width='4' height='20' color='0' fill='1'/>"
+    ""
+    "  </Layout>"
+    "</Main>";
 
 Point *startPoint;
 Point *endPoint;
@@ -51,6 +53,8 @@ Circle *ball;
 Circle *cursor;
 Rectangle *bar;
 Layout *barPanel;
+Rectangle *target;
+Text *scoreText;
 
 int power = 40;
 float angle = 0;
@@ -65,8 +69,14 @@ float ballYSpeed = 0;
 float xLoc;
 float yLoc;
 float gravity = .15;
+int score = 0;
 
 int currentState = 0;
+
+int TARGET_HEIGHT_UPPER_BOUND = 28;
+int TARGET_HEIGHT_LOWER_BOUND = 14;
+int TARGET_POSITION_LOWER_BOUND = 16;
+int TARGET_POSITION_UPPER_BOUND = 52;
 
 void setup()
 {
@@ -83,6 +93,8 @@ void setup()
   cursor = gfxEngine.getCircleByID("cursor");
   bar = gfxEngine.getRectangleByID("bar");
   barPanel = gfxEngine.getLayoutByID("barPanel");
+  target = gfxEngine.getRectangleByID("target");
+  scoreText = gfxEngine.getTextByID("scoreText");
 }
 
 void loop()
@@ -101,7 +113,8 @@ void loop()
   }
   else if (currentState == 2)
   {
-    throwBall();
+    moveBall();
+    checkCollisions();
   }
   gfxEngine.update();
 }
@@ -180,14 +193,15 @@ void barVisibility(bool visibility)
   barPanel->setVisibility(visibility);
 }
 
-void setSpeeds() {
+void setSpeeds()
+{
   ballXSpeed = power * cos(angle) * speedCoef;
   ballYSpeed = power * sin(angle) * speedCoef;
   xLoc = ball->getX();
   yLoc = ball->getY();
 }
 
-void throwBall()
+void moveBall()
 {
   if (millis() - MOVE_BALL_PAST_TIME > moveBallInterval)
   {
@@ -203,10 +217,52 @@ void throwBall()
     ball->setX(xLoc);
     ball->setY(yLoc);
     MOVE_BALL_PAST_TIME = millis();
-
-    Serial.print("Vertical speed: ");
-    Serial.print(ballYSpeed);
-    Serial.print("Horizontal speed: ");
-    Serial.println(ballXSpeed);
   }
+}
+
+void checkCollisions()
+{
+  if (ball->getY() >= target->getMgTop() && ball->getY() <= (target->getMgTop() + target->getH()))
+  {
+    if (ball->getX() >= SCREEN_WIDTH)
+    {
+      Serial.println("target hit");
+      createRandomTarget();
+      ball->setVisibility(0);
+      score++;
+      resetBallPosition();
+    }
+  }
+  else
+  {
+    if ((ball->getX() + ball->getRadius()) >= (SCREEN_WIDTH - target->getW()) && millis() - COLLISION_PAST_TIME > collisionInterval)
+    {
+      Serial.println("miss target");
+      ballXSpeed = -.6 * ballXSpeed;
+      ballYSpeed = .6 * ballYSpeed;
+      COLLISION_PAST_TIME = millis();
+    }
+  }
+
+  if (ball->getY() >= SCREEN_HEIGHT) {
+    Serial.println("hit floor");
+    ball->setVisibility(0);
+    resetBallPosition();
+  }
+}
+
+void resetBallPosition() {
+  delay(250);
+  ball->setVisibility(1);
+  ball->setX(12);
+  ball->setY(56);
+  currentState = 0;
+  power = 40;
+  angle = 0;
+  scoreText->setValue(score);
+}
+
+void createRandomTarget() {
+  target->setH(random(TARGET_HEIGHT_LOWER_BOUND, TARGET_HEIGHT_UPPER_BOUND));
+  target->setY(random(TARGET_POSITION_LOWER_BOUND, TARGET_POSITION_UPPER_BOUND));
 }
