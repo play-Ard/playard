@@ -8,9 +8,19 @@ void GFXEngine::loadXML(const char *XMLStr) // will be edited
     //         ;
 
     // Load XML document
-    if (!doc.load_string(XMLStr))
-        while (1)
-            ;
+
+    // TODO: Throw Errors
+    // if (!doc.load_string(XMLStr))
+    // {
+    //     GFXEngine::display.clearDisplay();
+    //     GFXEngine::display.setCursor(0, 0);
+    //     GFXEngine::display.setTextColor(1);
+    //     GFXEngine::display.setTextSize(1);
+    //     GFXEngine::display.println("ERROR");
+
+    //     while (1)
+    //         ;
+    // }
 
     // Clear component vectors, create new components and generate new component vectors
     GFXEngine::clearComponents();
@@ -20,11 +30,31 @@ void GFXEngine::loadXML(const char *XMLStr) // will be edited
 void GFXEngine::clearComponents()
 {
     // Clear all component vectors
-    GFXEngine::layoutComps.clear();
-    GFXEngine::rectComps.clear();
-    GFXEngine::circleComps.clear();
-    GFXEngine::textComps.clear();
-    GFXEngine::triangleComps.clear();
+    for (Layout *layout : GFXEngine::layoutComps)
+    {
+        delete (layout);
+        GFXEngine::layoutComps.remove(layout);
+    }
+    for (Rectangle *rectangle : GFXEngine::rectComps)
+    {
+        delete (rectangle);
+        GFXEngine::rectComps.remove(rectangle);
+    }
+    for (Circle *circle : GFXEngine::circleComps)
+    {
+        delete (circle);
+        GFXEngine::circleComps.remove(circle);
+    }
+    for (Text *text : GFXEngine::textComps)
+    {
+        delete (text);
+        GFXEngine::textComps.remove(text);
+    }
+    for (Triangle *triangle : GFXEngine::triangleComps)
+    {
+        delete (triangle);
+        GFXEngine::triangleComps.remove(triangle);
+    }
 }
 
 void GFXEngine::createComponents(xml_node node)
@@ -58,7 +88,7 @@ void GFXEngine::createComponents(xml_node node)
             point->setColor(child.attribute("color").as_uint(COLOR_DEFAULT));
             point->setVisibility(child.attribute("visibility").as_bool(VISIBILITY_DEFAULT));
             point->setParentID(node.attribute("id").value());
-        
+
             GFXEngine::pointComps.push_back(point);
         }
 
@@ -203,6 +233,15 @@ Layout *GFXEngine::getLayoutByID(std::string id)
         }
     }
 
+    // TODO: Throw Errors
+    // if (!doc.load_string(XMLStr))
+    // {
+    //     GFXEngine::display.clearDisplay();
+    //     GFXEngine::display.setCursor(0, 0);
+    //     GFXEngine::display.setTextColor(1);
+    //     GFXEngine::display.setTextSize(1);
+    //     GFXEngine::display.println("ERROR");
+
     while (1)
         ;
 }
@@ -216,6 +255,15 @@ Point *GFXEngine::getPointByID(std::string id)
             return point;
         }
     }
+
+    // TODO: Throw Errors
+    // if (!doc.load_string(XMLStr))
+    // {
+    //     GFXEngine::display.clearDisplay();
+    //     GFXEngine::display.setCursor(0, 0);
+    //     GFXEngine::display.setTextColor(1);
+    //     GFXEngine::display.setTextSize(1);
+    //     GFXEngine::display.println("ERROR");
 
     while (1)
         ;
@@ -231,6 +279,15 @@ Rectangle *GFXEngine::getRectangleByID(std::string id)
         }
     }
 
+    // TODO: Throw Errors
+    // if (!doc.load_string(XMLStr))
+    // {
+    //     GFXEngine::display.clearDisplay();
+    //     GFXEngine::display.setCursor(0, 0);
+    //     GFXEngine::display.setTextColor(1);
+    //     GFXEngine::display.setTextSize(1);
+    //     GFXEngine::display.println("ERROR");
+
     while (1)
         ;
 }
@@ -244,6 +301,15 @@ Triangle *GFXEngine::getTriangleByID(std::string id)
             return triangle;
         }
     }
+
+    // TODO: Throw Errors
+    // if (!doc.load_string(XMLStr))
+    // {
+    //     GFXEngine::display.clearDisplay();
+    //     GFXEngine::display.setCursor(0, 0);
+    //     GFXEngine::display.setTextColor(1);
+    //     GFXEngine::display.setTextSize(1);
+    //     GFXEngine::display.println("ERROR");
 
     while (1)
         ;
@@ -259,6 +325,15 @@ Circle *GFXEngine::getCircleByID(std::string id)
         }
     }
 
+    // TODO: Throw Errors
+    // if (!doc.load_string(XMLStr))
+    // {
+    //     GFXEngine::display.clearDisplay();
+    //     GFXEngine::display.setCursor(0, 0);
+    //     GFXEngine::display.setTextColor(1);
+    //     GFXEngine::display.setTextSize(1);
+    //     GFXEngine::display.println("ERROR");
+
     while (1)
         ;
 }
@@ -272,6 +347,14 @@ Text *GFXEngine::getTextByID(std::string id)
             return text;
         }
     }
+    // TODO: Throw Errors
+    // if (!doc.load_string(XMLStr))
+    // {
+    //     GFXEngine::display.clearDisplay();
+    //     GFXEngine::display.setCursor(0, 0);
+    //     GFXEngine::display.setTextColor(1);
+    //     GFXEngine::display.setTextSize(1);
+    //     GFXEngine::display.println("ERROR");
 
     while (1)
         ;
