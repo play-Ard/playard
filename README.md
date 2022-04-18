@@ -24,12 +24,9 @@ The Playard Game Engine is a game engine based on the speed of the C++ language 
 
 ## What Are Components and How to Use Them
 
-Components is one of the innovative solutions of the Playard Game Engine. On PGE, everything is produced and arranged in the form of components.Different components created for figures, texts and images are arranged in the background and displayed on the screen. Components thus provide a cleaner working environment for the programmer.
+Components are one of the innovative solutions of the Playard Game Engine. On PGE, everything is produced and arranged in the form of components.Different components created for figures, texts and images are arranged in the background and displayed on the screen. Components thus provide a cleaner working environment for the programmer.
 
 To access the components in our program we must load related XML string with function loadXML.  
-
-```cpp
-```
 
 ### Layouts
 
