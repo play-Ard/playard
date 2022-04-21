@@ -20,126 +20,13 @@ Playard Game Engine is created based on idea for seperating graphic design and p
 
 # How to Create Your Own Game
 
-The Playard Game Engine is a game engine based on the speed of the C++ and the flexibility of the XML. It allows you to make impressive games by shortening the development process. To make great games with the Playard Game Engine, you just need to download the source codes and include them in your program.
-
-## Workspace Setup
-
-In the Playard Game Engine, all games inherit from the Game class. A playard game should contain the following elements:
-
-### Downloading Playard Game Engine
-
-#### Via Github Version Control System (VCS)
-
-```shell
-git clone https://github.com/play-Ard/playard.git
-```
-
-#### Via Code Button
-You can also download it as a .zip file by clicking the Code > Download ZIP button above.
-
-#### Via Download Link
-[Download Here](https://github.com/play-Ard/playard/archive/refs/heads/main.zip)
-
-### Project Structure
-
-The default Playard project structure includes a games folder. All games accessible from the main menu must be created in this folder.
-
-```
-📦playard
-  ┣ 📂core
-  ┣ 📂modules
-  ┣ 📂games
-  ┃ ┗ 📜ExampleGame1.cpp
-  ┃ ┗ 📜ExampleGame2.cpp
-  ┃ ┗ 📜ExampleGame3.cpp
-  ┗ 📜main.ino
-```
-
-In Playard Game Engine, it is recommended to write visual designs in XML and game codes in C++. Although Playard is Arduino based, games should be programmed with .cpp files instead of .ino files. In this way, a Playard device can keep multiple games in its memory. Don't worry if the files are .cpp files instead of .ino. In fact, Playard's core software does most of the preprocessing you do while programming Arduino. However, if you need, you can use all the functions you used while programming the Arduino.
-
-### Game File Structure
-
-A Playard game should contain the following elements.
-
-1. Base XML design **_(required)_**
-2. Logo to show in the main menu _(64 x 48 White Bitmap)_ **_(required)_**
-3. A constructor that makes the necessary configurations **_(required)_**
-4. onCreate method to specify what should happen before the screen loads
-5. onStart method to specify what should happen when the game is just started **_(required)_**
-6. onUpdate method to decide what happens while the game is running **_(required)_**
-7. onExit method to run some commands like saving the current state of the game
-
-Let's create an example game called MyGame.
-
-```
-📦playard
-  ┣ 📂core
-  ┣ 📂modules
-  ┣ 📂games
-  ┃ ┗ 📜MyGame.cpp
-  ┗ 📜main.ino
-```
-
-```cpp
-#include "../core/PlayardCore.h"
-
-class MyGame : public Game
-{
-public:
-    const unsigned char logo[384] PROGMEM = {}; /* LOGO AS BITMAP */
-    const char *xml = "";                       /* XML DESIGN */
-
-    GFXEngine *graphics;
-    Input *input;
-
-    MyGame(GFXEngine *_graphics, Input *_input) : Game(logo)
-    {
-        setXML(xml);
-        this->graphics = _graphics;
-        this->input = _input;
-    }
-
-    void onCreate() override
-    {
-        // Some codes to run before the screen loads
-    }
-
-    void onStart() override
-    {
-        // Codes to run as soon as the game starts
-    }
-
-    void onUpdate() override
-    {
-        // Codes that will work as long as the game continues
-    }
-
-    void onExit() override
-    {
-        // Codes that will work when the this->exit() method runs
-    }
-};
-```
-
-
-Let's take a look at our example game.
-First we create a class called MyGame and this class should inherit from **Game** class. Then we define the logo of the game in bitmap format and the design template in xml format. Then you will learn how to convert your logo to bitmap format and your template to xml format.
-
-A little below, we see that the graphics and input pointers are defined to reach the graphics and the inputs received from the user. We'll take a look at how to use them later.
-
-Then, the necessary assignments are made in the constructor method.
-
-Right after, we have onCreate, onStart, onUpdate, onExit methods. Every Playard game must override the onStart and onUpdate methods. We will look at the details of these methods later.
-
-<img src="images/lifecycle.png"/> 
-
-#### Designing a Screen with XML
-
-Playard supports working with multiple designs with built-in XML processor. XML designs must specified as constant char pointer (const char *).
+The Playard Game Engine is a game engine based on the speed of the C++ language and the flexibility of the XML language. It allows you to make impressive games by shortening the development process. To make great games with the Playard Game Engine, you just need to download the source codes and include them in your program.
 
 ## What Are Components and How to Use Them
 
-Everything is created and organized into components in the Playard Game Engine. Different types of components created for shapes, text, and images allow the programmer to work more effectively on designs. So the components provide a cleaner workspace.
+Components are one of the innovative solutions of the Playard Game Engine. On PGE, everything is produced and arranged in the form of components.Different components created for figures, texts and images are arranged in the background and displayed on the screen. Components thus provide a cleaner working environment for the programmer.
+
+To access the components in our program we must load related XML string with function loadXML.  
 
 ### Layouts
 
