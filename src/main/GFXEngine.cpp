@@ -581,3 +581,14 @@ void GFXEngine::update()
     display.display();
     GFXEngine::display.clearDisplay();
 }
+
+void GFXEngine::throwError(const char* error_t)
+{
+    {
+        GFXEngine::display.clearDisplay();
+        GFXEngine::display.setCursor(0, 0);
+        GFXEngine::display.setTextColor(1);
+        GFXEngine::display.setTextSize(1);
+        GFXEngine::display.println(error_t);
+    }
+}

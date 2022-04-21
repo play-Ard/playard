@@ -29,7 +29,6 @@ private:
 
     /* -------------- END OF MAGIC STRINGS -------------------- */
 
-
     std::string xmlStr = "<Main><Layout id='mainLayout' width='128' height='64' x-position='64' y-position='32'>"              // experimental
                          "<Layout id='textLayout' width='96' height='16' x-position='64' y-position='12'>"                     // delete
                          "<Rectangle id='textBorder' width='96' height='16' x-position='48' y-position='8' color='1'/>"        // delete
@@ -393,6 +392,8 @@ public:
         Example Usage:
             begin(128, 64, -1, 0x3C);
     */
+
+    void throwError(const char *error_t);
 
     void update();
     /*
