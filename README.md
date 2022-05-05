@@ -24,7 +24,6 @@ The Playard Game Engine is a game engine based on the speed of the C++ and the f
 
 ## Workspace Setup
 
-In the Playard Game Engine, all games inherit from the Game class. A playard game should contain the following elements:
 
 ### Downloading Playard Game Engine
 
@@ -59,7 +58,7 @@ In Playard Game Engine, it is recommended to write visual designs in XML and gam
 
 ### Game File Structure
 
-A Playard game should contain the following elements.
+In the Playard Game Engine, all games inherit from the Game class. A Playard game should contain the following elements:
 
 1. Base XML design **_(required)_**
 2. Logo to show in the main menu _(64 x 48 White Bitmap)_ **_(required)_**
@@ -70,6 +69,7 @@ A Playard game should contain the following elements.
 7. onExit method to run some commands like saving the current state of the game
 
 Let's create an example game called MyGame.
+
 
 ```
 📦playard
